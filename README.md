@@ -7,6 +7,12 @@
 Public-facing demonstration repository for an audio/video sampling and label-prescreen pipeline.  
 The repository focuses on a complete post-capture flow: sample-unit ingestion, heuristic review, storyboard evidence generation, structured reporting, and a lightweight worker-style API surface.
 
+Primary entry points:
+
+- [Showcase Page](./docs/index.html)
+- [README](./README.md)
+- [Architecture](./docs/architecture.md)
+
 ## Highlights
 
 - Mock service layer with queue-style job lifecycle
@@ -104,6 +110,12 @@ python3 -m unittest discover -s tests -v
 python3 tools/export_showcase_bundle.py
 ```
 
+### Build Showcase Page
+
+```bash
+python3 tools/build_showcase_page.py
+```
+
 ## Sample Artifacts
 
 - [baseline_prescreen.json](./samples/results/baseline_prescreen.json)
@@ -120,6 +132,7 @@ python3 tools/export_showcase_bundle.py
 - [Design Decisions](./docs/design-decisions.md)
 - [API Reference](./docs/worker-api.md)
 - [Showcase Notes](./docs/showcase.md)
+- [Showcase Page](./docs/index.html)
 - [Bilingual Summary](./docs/summary-cn-en.md)
 - [Public Scope](./docs/public-scope.md)
 
