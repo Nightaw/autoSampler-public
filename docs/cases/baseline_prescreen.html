@@ -29,8 +29,11 @@
       .image-grid img { border-radius: 1rem; border: 1px solid rgba(27,31,32,0.12); background: #fff; }
       .step-list, .flag-list { list-style: none; padding: 0; margin: 0; }
       .step-list li, .flag-list li { padding: 0.8rem 0; border-top: 1px solid rgba(27,31,32,0.1); }
+      .story-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-top: 2rem; }
+      .story-card { border: 1px solid rgba(27,31,32,0.12); border-radius: 1.2rem; background: rgba(255,255,255,0.55); padding: 1rem; }
+      .story-card span { display: block; margin-bottom: 0.6rem; color: #6a6f69; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.14em; }
       .back { display: inline-block; margin-bottom: 1rem; color: #476c9b; }
-      @media (max-width: 900px) { .top, .grid, .image-grid { grid-template-columns: 1fr; } }
+      @media (max-width: 900px) { .top, .grid, .image-grid, .story-grid { grid-template-columns: 1fr; } }
     </style>
   </head>
   <body>
@@ -48,6 +51,12 @@
           <div><span>Stalls</span><strong>2</strong></div>
           <div><span>Resolution events</span><strong>3</strong></div>
         </div>
+      </section>
+      <section class="story-grid">
+        <article class="story-card"><span>Problem</span><p>Demonstrate the expected pass path for a clean capture-review sample.</p></article>
+        <article class="story-card"><span>Evidence</span><p>The sample includes bounded stall windows, multiple resolution transitions, and complete visual evidence.</p></article>
+        <article class="story-card"><span>Decision</span><p>The heuristics return pass because timing, bandwidth hints, and resolution behavior stay internally consistent.</p></article>
+        <article class="story-card"><span>Output</span><p>The runner emits baseline-grade JSON, Markdown, storyboard, and timeline artifacts for downstream reuse.</p></article>
       </section>
       <section class="grid">
         <article class="panel">

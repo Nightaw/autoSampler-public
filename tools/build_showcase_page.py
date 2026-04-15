@@ -102,6 +102,14 @@ def build_html() -> str:
     review_warnings = "".join(
         f"<li>{escape(item)}</li>" for item in review["metrics"]["heuristic"]["warnings"]
     )
+    comparison_rows = "".join(
+        [
+            f"<li><span>Decision split</span><strong>{escape(str(baseline['summary']['final_decision']).upper())} vs {escape(str(review['summary']['final_decision']).upper())}</strong></li>",
+            f"<li><span>Resolution density</span><strong>{baseline['summary']['resolution_count']} vs {review['summary']['resolution_count']}</strong></li>",
+            f"<li><span>Artifact role</span><strong>baseline proof vs escalation evidence</strong></li>",
+            f"<li><span>Interview use</span><strong>happy path vs review path</strong></li>",
+        ]
+    )
     return f"""<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -249,6 +257,22 @@ def build_html() -> str:
             <h2>Two sample units show both a clean pass path and a review-worthy edge case.</h2>
           </div>
           <div class="scenario-grid">{scenarios}</div>
+        </section>
+
+        <section class="detail-grid">
+          <article class="detail-panel reveal">
+            <p class="eyebrow">case study comparison</p>
+            <h2>The repo reads well in interviews because it demonstrates contrast, not just completeness.</h2>
+            <ul class="trace-list">{comparison_rows}</ul>
+          </article>
+          <article class="detail-panel accent reveal">
+            <p class="eyebrow">direct walkthroughs</p>
+            <h2>Use these pages when the conversation moves from architecture to a concrete scenario narrative.</h2>
+            <div class="scenario-links">
+              <a href="./cases/baseline_prescreen.html">open baseline case</a>
+              <a href="./cases/resolution_consistency_review.html">open review case</a>
+            </div>
+          </article>
         </section>
 
         <section class="gallery-section">

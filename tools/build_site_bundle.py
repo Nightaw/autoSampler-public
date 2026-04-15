@@ -184,6 +184,26 @@ def build_case_page(
         f"<li><strong>{escape(step['name'])}</strong><span>{escape(step['details'])}</span></li>"
         for step in report["execution"]["steps"]
     )
+    problem_text = (
+        "Demonstrate the expected pass path for a clean capture-review sample."
+        if report_name == "baseline_prescreen.json"
+        else "Demonstrate how a review-worthy regression is surfaced under constrained bandwidth."
+    )
+    evidence_text = (
+        "The sample includes bounded stall windows, multiple resolution transitions, and complete visual evidence."
+        if report_name == "baseline_prescreen.json"
+        else "The sample includes overlapping stalls, sparse resolution transitions, and a suspiciously high final quality label."
+    )
+    decision_text = (
+        "The heuristics return pass because timing, bandwidth hints, and resolution behavior stay internally consistent."
+        if report_name == "baseline_prescreen.json"
+        else "The heuristics return review because the quality trajectory conflicts with the constrained network profile."
+    )
+    output_text = (
+        "The runner emits baseline-grade JSON, Markdown, storyboard, and timeline artifacts for downstream reuse."
+        if report_name == "baseline_prescreen.json"
+        else "The runner emits escalation-ready JSON, Markdown, storyboard, and timeline artifacts for manual verification."
+    )
     return f"""<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -215,8 +235,11 @@ def build_case_page(
       .image-grid img {{ border-radius: 1rem; border: 1px solid rgba(27,31,32,0.12); background: #fff; }}
       .step-list, .flag-list {{ list-style: none; padding: 0; margin: 0; }}
       .step-list li, .flag-list li {{ padding: 0.8rem 0; border-top: 1px solid rgba(27,31,32,0.1); }}
+      .story-grid {{ display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-top: 2rem; }}
+      .story-card {{ border: 1px solid rgba(27,31,32,0.12); border-radius: 1.2rem; background: rgba(255,255,255,0.55); padding: 1rem; }}
+      .story-card span {{ display: block; margin-bottom: 0.6rem; color: #6a6f69; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.14em; }}
       .back {{ display: inline-block; margin-bottom: 1rem; color: #476c9b; }}
-      @media (max-width: 900px) {{ .top, .grid, .image-grid {{ grid-template-columns: 1fr; }} }}
+      @media (max-width: 900px) {{ .top, .grid, .image-grid, .story-grid {{ grid-template-columns: 1fr; }} }}
     </style>
   </head>
   <body>
@@ -234,6 +257,12 @@ def build_case_page(
           <div><span>Stalls</span><strong>{escape(str(summary['stall_count']))}</strong></div>
           <div><span>Resolution events</span><strong>{escape(str(summary['resolution_count']))}</strong></div>
         </div>
+      </section>
+      <section class="story-grid">
+        <article class="story-card"><span>Problem</span><p>{escape(problem_text)}</p></article>
+        <article class="story-card"><span>Evidence</span><p>{escape(evidence_text)}</p></article>
+        <article class="story-card"><span>Decision</span><p>{escape(decision_text)}</p></article>
+        <article class="story-card"><span>Output</span><p>{escape(output_text)}</p></article>
       </section>
       <section class="grid">
         <article class="panel">
