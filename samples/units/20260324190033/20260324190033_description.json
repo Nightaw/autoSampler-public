@@ -1,0 +1,13 @@
+{
+  "unit_id": "20260324190033",
+  "task_type": "cloud_game_sampling",
+  "metric_type": "stall+resolution",
+  "dataset_type": "public_demo",
+  "requirement_scenario": "low-bandwidth cloud game playback validation",
+  "app_version": "demo-1.4.2",
+  "device_name": "iPhone 15 Pro",
+  "networkSide_down_param": {
+    "bandwidth": "180kbps"
+  }
+}
+

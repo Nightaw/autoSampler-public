@@ -1,0 +1,27 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#F4F1EA"/>
+  <rect x="56" y="56" width="1088" height="518" rx="28" fill="#FFFDFC" stroke="#D7CFC0" stroke-width="2"/>
+  <rect x="104" y="132" width="240" height="140" rx="20" fill="#183A37"/>
+  <rect x="384" y="132" width="240" height="140" rx="20" fill="#C4492D"/>
+  <rect x="664" y="132" width="240" height="140" rx="20" fill="#476C9B"/>
+  <rect x="244" y="340" width="240" height="140" rx="20" fill="#E1D7C6"/>
+  <rect x="524" y="340" width="240" height="140" rx="20" fill="#F0A202"/>
+  <path d="M344 202H384" stroke="#5A544B" stroke-width="10" stroke-linecap="round"/>
+  <path d="M624 202H664" stroke="#5A544B" stroke-width="10" stroke-linecap="round"/>
+  <path d="M764 410H824V410" stroke="#5A544B" stroke-width="10" stroke-linecap="round"/>
+  <path d="M484 410H524" stroke="#5A544B" stroke-width="10" stroke-linecap="round"/>
+  <text x="104" y="96" fill="#1F1D19" font-family="Georgia, serif" font-size="44" font-weight="700">autoSampler Public</text>
+  <text x="104" y="116" fill="#6B6256" font-family="Helvetica, Arial, sans-serif" font-size="20">sample unit - heuristic prescreen - storyboard evidence - structured api demo</text>
+  <text x="140" y="188" fill="#FFFDFC" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="700">Sample Unit</text>
+  <text x="140" y="220" fill="#D7E4E2" font-family="Helvetica, Arial, sans-serif" font-size="18">description.json</text>
+  <text x="140" y="246" fill="#D7E4E2" font-family="Helvetica, Arial, sans-serif" font-size="18">label_infos.json</text>
+  <text x="420" y="188" fill="#FFFDFC" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="700">Prescreen Runner</text>
+  <text x="420" y="220" fill="#F6DDD6" font-family="Helvetica, Arial, sans-serif" font-size="18">stall / resolution scoring</text>
+  <text x="700" y="188" fill="#FFFDFC" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="700">Structured Report</text>
+  <text x="700" y="220" fill="#DFE8F4" font-family="Helvetica, Arial, sans-serif" font-size="18">json + markdown</text>
+  <text x="280" y="396" fill="#433B30" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="700">Storyboard Evidence</text>
+  <text x="280" y="428" fill="#6B6256" font-family="Helvetica, Arial, sans-serif" font-size="18">stall / resolution keyframes</text>
+  <text x="564" y="396" fill="#433B30" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="700">Flask Demo API</text>
+  <text x="564" y="428" fill="#6B6256" font-family="Helvetica, Arial, sans-serif" font-size="18">health / run / jobs / report</text>
+</svg>
+

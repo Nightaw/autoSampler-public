@@ -1,0 +1,32 @@
+{
+  "work_start_time": 0.0,
+  "work_end_time": 18.0,
+  "stall": [
+    {
+      "start": 4.2,
+      "end": 5.8
+    },
+    {
+      "start": 11.4,
+      "end": 12.3
+    }
+  ],
+  "resolution": [
+    {
+      "time": 1.0,
+      "resolution": "1080P",
+      "resolution_raw": "1920x1080"
+    },
+    {
+      "time": 6.1,
+      "resolution": "720P",
+      "resolution_raw": "1280x720"
+    },
+    {
+      "time": 12.5,
+      "resolution": "540P",
+      "resolution_raw": "960x540"
+    }
+  ]
+}
+

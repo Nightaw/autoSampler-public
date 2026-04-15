@@ -1,0 +1,128 @@
+{
+  "scenario": {
+    "name": "baseline_prescreen",
+    "title": "Baseline Label Prescreen",
+    "description": "Mock prescreen service that evaluates a sampled unit, extracts stall and resolution evidence, and returns a structured review report.",
+    "unit_dir": "units/20260324190033",
+    "steps": [
+      "load_unit_metadata",
+      "inspect_video_metadata",
+      "score_heuristics",
+      "render_storyboards",
+      "persist_report"
+    ],
+    "focus": [
+      "stall",
+      "resolution",
+      "report"
+    ]
+  },
+  "execution": {
+    "status": "passed",
+    "steps": [
+      {
+        "name": "load_unit_metadata",
+        "status": "passed",
+        "duration_sec": 0.0,
+        "details": "Loaded description.json and label_infos.json"
+      },
+      {
+        "name": "inspect_video_metadata",
+        "status": "passed",
+        "duration_sec": 0.056,
+        "details": "Collected video duration, size, and dimensions"
+      },
+      {
+        "name": "score_heuristics",
+        "status": "passed",
+        "duration_sec": 0.0,
+        "details": "Computed rule score=100"
+      },
+      {
+        "name": "render_storyboards",
+        "status": "passed",
+        "duration_sec": 0.381,
+        "details": "Rendered storyboard artifacts when ffmpeg and Pillow were available"
+      },
+      {
+        "name": "persist_report",
+        "status": "passed",
+        "duration_sec": 0.0,
+        "details": "Persisted JSON and Markdown reports to tmp/demo_runs"
+      }
+    ]
+  },
+  "metrics": {
+    "video_info": {
+      "duration": 18.0,
+      "size_bytes": 20164,
+      "width": 540,
+      "height": 960,
+      "frame_rate": 25.0
+    },
+    "label_summary": {
+      "stall": [
+        {
+          "start": 4.2,
+          "end": 5.8
+        },
+        {
+          "start": 11.4,
+          "end": 12.3
+        }
+      ],
+      "resolution": [
+        {
+          "time": 1.0,
+          "resolution": "1080P",
+          "resolution_raw": "1920x1080"
+        },
+        {
+          "time": 6.1,
+          "resolution": "720P",
+          "resolution_raw": "1280x720"
+        },
+        {
+          "time": 12.5,
+          "resolution": "540P",
+          "resolution_raw": "960x540"
+        }
+      ]
+    },
+    "heuristic": {
+      "score": 100,
+      "decision": "pass",
+      "reasons": [],
+      "warnings": [],
+      "summary": {
+        "bandwidth_kbps": 180,
+        "work_duration_seconds": 18.0,
+        "stall_count": 2,
+        "stall_total_seconds": 2.5,
+        "longest_stall_seconds": 1.6,
+        "resolution_count": 3,
+        "video_duration_seconds": 18.0
+      }
+    }
+  },
+  "summary": {
+    "unit_id": "20260324190033",
+    "final_decision": "pass",
+    "final_score": 100,
+    "bandwidth_kbps": 180,
+    "work_duration_seconds": 18.0,
+    "stall_count": 2,
+    "longest_stall_seconds": 1.6,
+    "resolution_count": 3,
+    "scenario": "low-bandwidth cloud game playback validation",
+    "app_version": "demo-1.4.2"
+  },
+  "artifacts": {
+    "report_json": "tmp/demo_runs/baseline_prescreen/report.json",
+    "report_markdown": "tmp/demo_runs/baseline_prescreen/report.md",
+    "stall_storyboard": "tmp/demo_runs/baseline_prescreen/stall_storyboard.jpg",
+    "resolution_storyboard": "tmp/demo_runs/baseline_prescreen/resolution_storyboard.jpg",
+    "sample_payload": "samples/payloads/baseline_prescreen.json",
+    "sample_unit": "samples/units/20260324190033"
+  }
+}
