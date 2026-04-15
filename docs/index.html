@@ -38,6 +38,7 @@
             <div class="cta-row">
               <a class="primary" href="../samples/results/baseline_prescreen.json">Open baseline report</a>
               <a class="secondary" href="../docs/architecture.md">Read architecture</a>
+              <a class="secondary" href="../docs/interview-brief.md">Interview brief</a>
             </div>
           </div>
           <div class="hero-visual reveal">
@@ -72,7 +73,7 @@
           <div class="band-stats">
             <div><span>Scenarios</span><strong>2</strong></div>
             <div><span>API routes</span><strong>7</strong></div>
-            <div><span>Tests</span><strong>16</strong></div>
+            <div><span>Tests</span><strong>19</strong></div>
             <div><span>Artifacts</span><strong>JSON + MD + JPG</strong></div>
           </div>
         </section>
@@ -85,12 +86,33 @@
           <div class="arch-layout">
             <ol class="arch-track reveal"><li><span>01</span><p>Sample unit enters the queue with description metadata and screen recording.</p></li><li><span>02</span><p>Device registry resolves a capture target and execution profile.</p></li><li><span>03</span><p>Scenario planner expands worker steps into a deterministic run plan.</p></li><li><span>04</span><p>Heuristic scorer validates stall and resolution labels against timing and bandwidth.</p></li><li><span>05</span><p>Storyboard generator exports reviewer-friendly image evidence.</p></li><li><span>06</span><p>JSON and Markdown artifacts are returned through CLI and API surfaces.</p></li></ol>
             <div class="arch-side reveal">
-              <img src="../docs/hero.svg" alt="project hero diagram" />
+              <img src="../docs/generated/architecture-export.svg" alt="project architecture export" />
               <p>
                 The public repo keeps the same shape as a larger internal workflow: queue-style entry,
                 execution targeting, scoring, evidence generation, and downstream artifact delivery.
               </p>
             </div>
+          </div>
+        </section>
+
+        <section class="gallery-section">
+          <div class="section-head reveal">
+            <p class="eyebrow">generated visuals</p>
+            <h2>Repository assets now export into ready-to-share diagrams instead of ad-hoc screenshots.</h2>
+          </div>
+          <div class="gallery-strip reveal">
+            <figure>
+              <img src="../docs/generated/scenario-comparison.svg" alt="scenario comparison chart" />
+              <figcaption>Scenario scores and outcome split across bundled sample units.</figcaption>
+            </figure>
+            <figure>
+              <img src="../docs/generated/device-capability-matrix.svg" alt="device capability matrix" />
+              <figcaption>Mock execution targets mapped by role, platform, and worker capability.</figcaption>
+            </figure>
+            <figure>
+              <img src="../docs/generated/baseline-timeline.svg" alt="baseline timeline chart" />
+              <figcaption>Timeline export for stall windows and resolution transitions.</figcaption>
+            </figure>
           </div>
         </section>
 
@@ -177,6 +199,27 @@
           </article>
         </section>
 
+        <section class="gallery-section">
+          <div class="section-head reveal">
+            <p class="eyebrow">timeline exports</p>
+            <h2>Two timeline views make the baseline and review cases comparable at a glance.</h2>
+          </div>
+          <div class="gallery-strip reveal">
+            <figure>
+              <img src="../docs/generated/baseline-timeline.svg" alt="baseline timeline export" />
+              <figcaption>Baseline run with multiple resolution events and bounded stall windows.</figcaption>
+            </figure>
+            <figure>
+              <img src="../docs/generated/review-timeline.svg" alt="review timeline export" />
+              <figcaption>Review run with overlapping stalls and sparse resolution changes.</figcaption>
+            </figure>
+            <figure>
+              <img src="../docs/hero.svg" alt="project hero diagram" />
+              <figcaption>Compact hero asset for README, slides, or portfolio previews.</figcaption>
+            </figure>
+          </div>
+        </section>
+
         <section class="api-section">
           <div class="section-head reveal">
             <p class="eyebrow">service surface</p>
@@ -211,6 +254,19 @@ python3 tools/build_showcase_page.py</code></pre>
               autoSampler-public 是一个面向采样后处理链路的轻量公开演示项目，覆盖 sample unit 读取、
               设备选择、场景执行规划、标签规则校验、storyboard 证据生成，以及结构化报告输出。
             </p>
+          </div>
+        </section>
+
+        <section class="band reveal">
+          <div>
+            <p class="eyebrow">interview mode</p>
+            <h2>Slides, brief, diagrams, reports, and static page are all generated from the same repo state.</h2>
+          </div>
+          <div class="band-stats">
+            <div><span>Brief</span><strong><a href="../docs/interview-brief.md">interview-brief.md</a></strong></div>
+            <div><span>Visual exports</span><strong>5 SVG</strong></div>
+            <div><span>Showcase page</span><strong><a href="../docs/index.html">docs/index.html</a></strong></div>
+            <div><span>Manifest</span><strong><a href="../docs/showcase_manifest.json">JSON</a></strong></div>
           </div>
         </section>
       </main>

@@ -1,0 +1,23 @@
+<svg width="1200" height="680" viewBox="0 0 1200 680" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="1200" height="680" rx="28" fill="#FBF8F2"/>
+
+<text x="72" y="90" fill="#1B1F20" font-family="Georgia, serif" font-size="40">scenario comparison</text>
+<text x="72" y="120" fill="#5F625B" font-family="Helvetica, Arial, sans-serif" font-size="18">score and artifact behavior across bundled sample units</text>
+<line x1="72" y1="530" x2="1128" y2="530" stroke="#D8CFBD" stroke-width="2"/>
+<text x="72" y="520" fill="#8A857A" font-family="Helvetica, Arial, sans-serif" font-size="14">0</text>
+<text x="72" y="210" fill="#8A857A" font-family="Helvetica, Arial, sans-serif" font-size="14">100</text>
+
+<rect x="88" y="190" width="180" height="340" rx="18" fill="#183A37"/>
+<text x="112" y="232" fill="#FFFDF6" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="700">Baseline Label Prescreen</text>
+<text x="112" y="268" fill="#F0F0E8" font-family="Helvetica, Arial, sans-serif" font-size="16">PASS / 100</text>
+<text x="88" y="584" fill="#5F625B" font-family="Helvetica, Arial, sans-serif" font-size="16">stall 2</text>
+<text x="88" y="608" fill="#5F625B" font-family="Helvetica, Arial, sans-serif" font-size="16">resolution 3</text>
+
+<rect x="328" y="252" width="180" height="278" rx="18" fill="#C79B28"/>
+<text x="352" y="294" fill="#FFFDF6" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="700">Resolution Consistency Review</text>
+<text x="352" y="330" fill="#F0F0E8" font-family="Helvetica, Arial, sans-serif" font-size="16">REVIEW / 82</text>
+<text x="328" y="584" fill="#5F625B" font-family="Helvetica, Arial, sans-serif" font-size="16">stall 3</text>
+<text x="328" y="608" fill="#5F625B" font-family="Helvetica, Arial, sans-serif" font-size="16">resolution 1</text>
+
+
+</svg>

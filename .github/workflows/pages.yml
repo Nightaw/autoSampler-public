@@ -25,6 +25,8 @@ jobs:
       - name: Build showcase assets
         run: |
           python tools/export_showcase_bundle.py
+          python tools/build_visual_assets.py
+          python tools/build_interview_brief.py
           python tools/build_showcase_page.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
@@ -40,4 +42,3 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
-

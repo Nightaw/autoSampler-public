@@ -23,6 +23,13 @@ def rel(path: str) -> str:
     return "../" + path
 
 
+def count_tests() -> int:
+    total = 0
+    for path in (ROOT / "tests").glob("test_*.py"):
+        total += path.read_text(encoding="utf-8").count("def test_")
+    return total
+
+
 def scenario_markup(scenario: dict) -> str:
     summary = scenario.get("summary") or {}
     decision = escape(str(summary.get("final_decision", "n/a")).upper())
@@ -55,6 +62,7 @@ def build_html() -> str:
     manifest = build_showcase_manifest()
     baseline = load_json(ROOT / "samples" / "results" / "baseline_prescreen.json")
     review = load_json(ROOT / "samples" / "results" / "resolution_consistency_review.json")
+    test_count = count_tests()
 
     scenarios = "\n".join(scenario_markup(item) for item in manifest["scenarios"])
     architecture_steps = "".join(
@@ -90,7 +98,6 @@ def build_html() -> str:
     review_warnings = "".join(
         f"<li>{escape(item)}</li>" for item in review["metrics"]["heuristic"]["warnings"]
     )
-
     return f"""<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -131,6 +138,7 @@ def build_html() -> str:
             <div class="cta-row">
               <a class="primary" href="../samples/results/baseline_prescreen.json">Open baseline report</a>
               <a class="secondary" href="../docs/architecture.md">Read architecture</a>
+              <a class="secondary" href="../docs/interview-brief.md">Interview brief</a>
             </div>
           </div>
           <div class="hero-visual reveal">
@@ -165,7 +173,7 @@ def build_html() -> str:
           <div class="band-stats">
             <div><span>Scenarios</span><strong>{len(manifest['scenarios'])}</strong></div>
             <div><span>API routes</span><strong>7</strong></div>
-            <div><span>Tests</span><strong>16</strong></div>
+            <div><span>Tests</span><strong>{test_count}</strong></div>
             <div><span>Artifacts</span><strong>JSON + MD + JPG</strong></div>
           </div>
         </section>
@@ -178,12 +186,33 @@ def build_html() -> str:
           <div class="arch-layout">
             <ol class="arch-track reveal">{architecture_steps}</ol>
             <div class="arch-side reveal">
-              <img src="../docs/hero.svg" alt="project hero diagram" />
+              <img src="../docs/generated/architecture-export.svg" alt="project architecture export" />
               <p>
                 The public repo keeps the same shape as a larger internal workflow: queue-style entry,
                 execution targeting, scoring, evidence generation, and downstream artifact delivery.
               </p>
             </div>
+          </div>
+        </section>
+
+        <section class="gallery-section">
+          <div class="section-head reveal">
+            <p class="eyebrow">generated visuals</p>
+            <h2>Repository assets now export into ready-to-share diagrams instead of ad-hoc screenshots.</h2>
+          </div>
+          <div class="gallery-strip reveal">
+            <figure>
+              <img src="../docs/generated/scenario-comparison.svg" alt="scenario comparison chart" />
+              <figcaption>Scenario scores and outcome split across bundled sample units.</figcaption>
+            </figure>
+            <figure>
+              <img src="../docs/generated/device-capability-matrix.svg" alt="device capability matrix" />
+              <figcaption>Mock execution targets mapped by role, platform, and worker capability.</figcaption>
+            </figure>
+            <figure>
+              <img src="../docs/generated/baseline-timeline.svg" alt="baseline timeline chart" />
+              <figcaption>Timeline export for stall windows and resolution transitions.</figcaption>
+            </figure>
           </div>
         </section>
 
@@ -229,6 +258,27 @@ def build_html() -> str:
           </article>
         </section>
 
+        <section class="gallery-section">
+          <div class="section-head reveal">
+            <p class="eyebrow">timeline exports</p>
+            <h2>Two timeline views make the baseline and review cases comparable at a glance.</h2>
+          </div>
+          <div class="gallery-strip reveal">
+            <figure>
+              <img src="../docs/generated/baseline-timeline.svg" alt="baseline timeline export" />
+              <figcaption>Baseline run with multiple resolution events and bounded stall windows.</figcaption>
+            </figure>
+            <figure>
+              <img src="../docs/generated/review-timeline.svg" alt="review timeline export" />
+              <figcaption>Review run with overlapping stalls and sparse resolution changes.</figcaption>
+            </figure>
+            <figure>
+              <img src="../docs/hero.svg" alt="project hero diagram" />
+              <figcaption>Compact hero asset for README, slides, or portfolio previews.</figcaption>
+            </figure>
+          </div>
+        </section>
+
         <section class="api-section">
           <div class="section-head reveal">
             <p class="eyebrow">service surface</p>
@@ -265,6 +315,19 @@ python3 tools/build_showcase_page.py</code></pre>
             </p>
           </div>
         </section>
+
+        <section class="band reveal">
+          <div>
+            <p class="eyebrow">interview mode</p>
+            <h2>Slides, brief, diagrams, reports, and static page are all generated from the same repo state.</h2>
+          </div>
+          <div class="band-stats">
+            <div><span>Brief</span><strong><a href="../docs/interview-brief.md">interview-brief.md</a></strong></div>
+            <div><span>Visual exports</span><strong>5 SVG</strong></div>
+            <div><span>Showcase page</span><strong><a href="../docs/index.html">docs/index.html</a></strong></div>
+            <div><span>Manifest</span><strong><a href="../docs/showcase_manifest.json">JSON</a></strong></div>
+          </div>
+        </section>
       </main>
     </div>
 
@@ -296,4 +359,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

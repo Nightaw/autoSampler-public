@@ -19,8 +19,10 @@ class ShowcasePageTest(unittest.TestCase):
         self.assertIn("Post-capture sampling turned into a portfolio-grade service demo.", html)
         self.assertIn("GET /demo/showcase", html)
         self.assertIn("../samples/results/stall_storyboard.jpg", html)
+        self.assertIn("../docs/generated/scenario-comparison.svg", html)
+        self.assertIn("../docs/interview-brief.md", html)
+
 
 
 if __name__ == "__main__":
     unittest.main()
-

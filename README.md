@@ -12,6 +12,7 @@ Primary entry points:
 - [Showcase Page](./docs/index.html)
 - [README](./README.md)
 - [Architecture](./docs/architecture.md)
+- [Interview Brief](./docs/interview-brief.md)
 
 ## Highlights
 
@@ -116,6 +117,13 @@ python3 tools/export_showcase_bundle.py
 python3 tools/build_showcase_page.py
 ```
 
+### Build Visual Exports
+
+```bash
+python3 tools/build_visual_assets.py
+python3 tools/build_interview_brief.py
+```
+
 ## Sample Artifacts
 
 - [baseline_prescreen.json](./samples/results/baseline_prescreen.json)
@@ -133,6 +141,7 @@ python3 tools/build_showcase_page.py
 - [API Reference](./docs/worker-api.md)
 - [Showcase Notes](./docs/showcase.md)
 - [Showcase Page](./docs/index.html)
+- [Interview Brief](./docs/interview-brief.md)
 - [Bilingual Summary](./docs/summary-cn-en.md)
 - [Public Scope](./docs/public-scope.md)
 
