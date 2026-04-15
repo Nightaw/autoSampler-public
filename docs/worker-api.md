@@ -27,6 +27,19 @@ ok
 }
 ```
 
+## `GET /demo/scenarios/<scenario_name>`
+
+返回单个场景的完整定义，包括执行 profile、目标平台和关注指标。
+
+## `GET /demo/devices`
+
+返回 mock device registry。
+
+查询参数：
+
+- `platform`
+- `role`
+
 ## `POST /demo/run`
 
 直接运行一次 mock prescreen。
@@ -36,6 +49,14 @@ ok
 ```json
 {
   "scenario": "baseline_prescreen"
+}
+```
+
+也可以传入：
+
+```json
+{
+  "scenario": "resolution_consistency_review"
 }
 ```
 
@@ -54,4 +75,3 @@ ok
 ## `GET /demo/report.md?scenario=baseline_prescreen`
 
 返回 Markdown 版本报告，适合直接在浏览器或文档系统里查看。
-

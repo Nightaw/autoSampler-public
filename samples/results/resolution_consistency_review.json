@@ -1,9 +1,9 @@
 {
   "scenario": {
-    "name": "baseline_prescreen",
-    "title": "Baseline Label Prescreen",
-    "description": "Mock prescreen worker that evaluates a sampled unit, extracts storyboard evidence, and emits structured review artifacts.",
-    "unit_dir": "units/20260324190033",
+    "name": "resolution_consistency_review",
+    "title": "Resolution Consistency Review",
+    "description": "Resolution-oriented audit path that highlights self-consistency issues between bandwidth constraints, labeled events, and final playback quality.",
+    "unit_dir": "units/20260324195510",
     "steps": [
       "load_unit_metadata",
       "inspect_video_metadata",
@@ -12,16 +12,16 @@
       "persist_report"
     ],
     "focus": [
-      "stall",
       "resolution",
+      "quality-floor",
       "report"
     ],
     "preferred_platforms": [
-      "ios",
-      "android"
+      "android",
+      "ios"
     ],
     "preferred_role": "capture",
-    "execution_profile": "prescreen"
+    "execution_profile": "resolution_audit"
   },
   "devices": [
     {
@@ -43,13 +43,13 @@
   ],
   "execution": {
     "status": "passed",
-    "profile": "prescreen",
+    "profile": "resolution_audit",
     "steps": [
       {
         "name": "resolve_device",
         "status": "passed",
         "duration_sec": 0.0,
-        "details": "Selected ios-lab-01 for prescreen"
+        "details": "Selected ios-lab-01 for resolution_audit"
       },
       {
         "name": "load_unit_metadata",
@@ -60,25 +60,25 @@
       {
         "name": "inspect_video_metadata",
         "status": "passed",
-        "duration_sec": 0.022,
+        "duration_sec": 0.025,
         "details": "Read recording duration, size, and frame rate via ffprobe."
       },
       {
         "name": "build_execution_plan",
         "status": "passed",
         "duration_sec": 0.0,
-        "details": "Expanded to 7 execution steps"
+        "details": "Expanded to 6 execution steps"
       },
       {
         "name": "score_heuristics",
         "status": "passed",
         "duration_sec": 0.0,
-        "details": "Computed rule score=100 and decision=pass"
+        "details": "Computed rule score=82 and decision=review"
       },
       {
         "name": "render_storyboards",
         "status": "passed",
-        "duration_sec": 0.353,
+        "duration_sec": 0.377,
         "details": "Rendered storyboard evidence from selected video timestamps."
       },
       {
@@ -92,7 +92,7 @@
   "metrics": {
     "video_info": {
       "duration": 18.0,
-      "size_bytes": 20164,
+      "size_bytes": 20277,
       "width": 540,
       "height": 960,
       "frame_rate": 25.0
@@ -100,59 +100,56 @@
     "label_summary": {
       "stall": [
         {
-          "start": 4.2,
-          "end": 5.8
+          "start": 2.5,
+          "end": 3.0
         },
         {
-          "start": 11.4,
-          "end": 12.3
+          "start": 9.7,
+          "end": 10.9
+        },
+        {
+          "start": 10.6,
+          "end": 11.4
         }
       ],
       "resolution": [
         {
-          "time": 1.0,
+          "time": 1.2,
           "resolution": "1080P",
           "resolution_raw": "1920x1080"
-        },
-        {
-          "time": 6.1,
-          "resolution": "720P",
-          "resolution_raw": "1280x720"
-        },
-        {
-          "time": 12.5,
-          "resolution": "540P",
-          "resolution_raw": "960x540"
         }
       ]
     },
     "heuristic": {
-      "score": 100,
-      "decision": "pass",
+      "score": 82,
+      "decision": "review",
       "reasons": [],
-      "warnings": [],
+      "warnings": [
+        "Detected 1 overlapping stall intervals.",
+        "Final resolution remained unusually high for the available bandwidth.",
+        "Resolution trajectory is too sparse for a constrained-network run."
+      ],
       "summary": {
         "bandwidth_kbps": 180,
         "work_duration_seconds": 18.0,
-        "stall_count": 2,
+        "stall_count": 3,
         "stall_total_seconds": 2.5,
-        "longest_stall_seconds": 1.6,
-        "resolution_count": 3,
+        "longest_stall_seconds": 1.2,
+        "resolution_count": 1,
         "video_duration_seconds": 18.0
       }
     },
     "execution_plan": {
-      "profile": "prescreen",
+      "profile": "resolution_audit",
       "device_id": "ios-lab-01",
       "device_role": "capture",
       "focus": [
-        "stall",
         "resolution",
+        "quality-floor",
         "report"
       ],
       "steps": [
         "resolve_device",
-        "build_execution_plan",
         "load_unit_metadata",
         "inspect_video_metadata",
         "score_heuristics",
@@ -162,23 +159,23 @@
     }
   },
   "summary": {
-    "unit_id": "20260324190033",
-    "final_decision": "pass",
-    "final_score": 100,
+    "unit_id": "20260324195510",
+    "final_decision": "review",
+    "final_score": 82,
     "bandwidth_kbps": 180,
     "work_duration_seconds": 18.0,
-    "stall_count": 2,
-    "longest_stall_seconds": 1.6,
-    "resolution_count": 3,
-    "scenario": "low-bandwidth cloud game playback validation",
+    "stall_count": 3,
+    "longest_stall_seconds": 1.2,
+    "resolution_count": 1,
+    "scenario": "resolution consistency audit under constrained bandwidth",
     "app_version": "demo-1.4.2"
   },
   "artifacts": {
-    "report_json": "tmp/demo_runs/baseline_prescreen/report.json",
-    "report_markdown": "tmp/demo_runs/baseline_prescreen/report.md",
-    "stall_storyboard": "tmp/demo_runs/baseline_prescreen/stall_storyboard.jpg",
-    "resolution_storyboard": "tmp/demo_runs/baseline_prescreen/resolution_storyboard.jpg",
-    "sample_payload": "samples/payloads/baseline_prescreen.json",
-    "sample_unit": "samples/units/20260324190033"
+    "report_json": "tmp/demo_runs/resolution_consistency_review/report.json",
+    "report_markdown": "tmp/demo_runs/resolution_consistency_review/report.md",
+    "stall_storyboard": "tmp/demo_runs/resolution_consistency_review/stall_storyboard.jpg",
+    "resolution_storyboard": "tmp/demo_runs/resolution_consistency_review/resolution_storyboard.jpg",
+    "sample_payload": "samples/payloads/resolution_consistency_review.json",
+    "sample_unit": "samples/units/20260324195510"
   }
 }

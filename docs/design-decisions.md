@@ -17,7 +17,7 @@
 ## 2. 保留服务层，而不是只保留脚本
 
 如果只有一个 `label_prescreen.py`，仓库会像工具脚本集合。  
-补上 mock API 和 job queue 后，更像真实项目，也更利于展示“工程化组织能力”。
+补上 mock API、job queue、device registry 和 scenario planner 后，更像真实项目，也更利于展示“工程化组织能力”。
 
 ## 3. 远端 SSH / 模型补评分不放进默认主线
 
@@ -36,3 +36,11 @@
 
 这样仓库对外部环境更宽容。
 
+## 5. 使用多个 sample unit，而不是单一 happy path
+
+公开版现在保留两类样例：
+
+- 规则较干净的 baseline case
+- 需要人工复核的 resolution review case
+
+这样仓库展示的不只是“能跑通”，还包括“能发现问题”。

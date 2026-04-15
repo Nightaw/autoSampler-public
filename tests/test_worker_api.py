@@ -29,6 +29,18 @@ class WorkerApiTest(unittest.TestCase):
         data = response.get_json()
         self.assertEqual(data["scenarios"][0]["name"], "baseline_prescreen")
 
+    def test_scenario_detail(self) -> None:
+        response = self.client.get("/demo/scenarios/resolution_consistency_review")
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertEqual(data["execution_profile"], "resolution_audit")
+
+    def test_devices(self) -> None:
+        response = self.client.get("/demo/devices?platform=android")
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertTrue(all(device["platform"] == "android" for device in data["devices"]))
+
     def test_run_demo(self) -> None:
         response = self.client.post("/demo/run", json={"scenario": "baseline_prescreen"})
         self.assertEqual(response.status_code, 200)
@@ -47,6 +59,12 @@ class WorkerApiTest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.get_json()
         self.assertGreaterEqual(data["scenario_count"], 2)
+
+    def test_showcase(self) -> None:
+        response = self.client.get("/demo/showcase")
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertEqual(data["project"], "autoSampler Public")
 
     def test_job_lifecycle(self) -> None:
         created = self.client.post("/demo/jobs", json={"scenario": "baseline_prescreen"})
@@ -71,4 +89,3 @@ class WorkerApiTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

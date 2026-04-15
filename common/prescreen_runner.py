@@ -17,8 +17,10 @@ except ImportError:  # pragma: no cover - optional runtime dependency
     ImageFont = None
     ImageOps = None
 
-from common.models import JobReport, ScenarioDefinition, StepResult
+from common.device_registry import list_devices, select_devices
+from common.models import JobReport, ScenarioDefinition
 from common.report_formatter import render_markdown_report
+from common.scenario_runner import build_execution_plan, record_step
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,8 +33,8 @@ SCENARIOS: dict[str, ScenarioDefinition] = {
         name="baseline_prescreen",
         title="Baseline Label Prescreen",
         description=(
-            "Mock prescreen service that evaluates a sampled unit, extracts stall and "
-            "resolution evidence, and returns a structured review report."
+            "Mock prescreen worker that evaluates a sampled unit, extracts storyboard evidence, "
+            "and emits structured review artifacts."
         ),
         unit_dir="units/20260324190033",
         steps=(
@@ -43,22 +45,29 @@ SCENARIOS: dict[str, ScenarioDefinition] = {
             "persist_report",
         ),
         focus=("stall", "resolution", "report"),
+        preferred_platforms=("ios", "android"),
+        preferred_role="capture",
+        execution_profile="prescreen",
     ),
     "resolution_consistency_review": ScenarioDefinition(
         name="resolution_consistency_review",
         title="Resolution Consistency Review",
         description=(
-            "Mock scenario focused on whether resolution labels remain self-consistent "
-            "under constrained bandwidth conditions."
+            "Resolution-oriented audit path that highlights self-consistency issues between "
+            "bandwidth constraints, labeled events, and final playback quality."
         ),
-        unit_dir="units/20260324190033",
+        unit_dir="units/20260324195510",
         steps=(
             "load_unit_metadata",
             "inspect_video_metadata",
             "score_heuristics",
+            "render_storyboards",
             "persist_report",
         ),
-        focus=("resolution", "sanity_check"),
+        focus=("resolution", "quality-floor", "report"),
+        preferred_platforms=("android", "ios"),
+        preferred_role="capture",
+        execution_profile="resolution_audit",
     ),
 }
 
@@ -78,6 +87,12 @@ def to_pretty_json(payload: dict[str, Any]) -> str:
     return json.dumps(payload, indent=2, ensure_ascii=False)
 
 
+def get_scenario(name: str) -> dict[str, Any]:
+    if name not in SCENARIOS:
+        raise KeyError(f"Unknown scenario: {name}")
+    return SCENARIOS[name].to_dict()
+
+
 def list_scenarios() -> list[dict]:
     return [scenario.to_dict() for scenario in SCENARIOS.values()]
 
@@ -86,10 +101,12 @@ def describe_architecture() -> dict[str, Any]:
     return {
         "scenario_count": len(SCENARIOS),
         "pipeline_layers": [
-            "unit fixtures",
+            "sample units",
+            "device registry",
+            "execution planner",
             "heuristic scorer",
             "storyboard generator",
-            "markdown formatter",
+            "artifact formatter",
             "flask demo api",
         ],
         "artifact_roots": [
@@ -97,6 +114,46 @@ def describe_architecture() -> dict[str, Any]:
             "samples/payloads",
             "samples/results",
             "tmp/demo_runs",
+        ],
+        "available_devices": list_devices(),
+    }
+
+
+def build_showcase_manifest() -> dict[str, Any]:
+    scenarios = []
+    for scenario in SCENARIOS.values():
+        result_path = ROOT / "samples" / "results" / f"{scenario.name}.json"
+        result_summary = None
+        if result_path.exists():
+            result_summary = load_json(result_path).get("summary")
+        scenarios.append(
+            {
+                "name": scenario.name,
+                "title": scenario.title,
+                "description": scenario.description,
+                "execution_profile": scenario.execution_profile,
+                "focus": list(scenario.focus),
+                "payload": f"samples/payloads/{scenario.name}.json",
+                "result": f"samples/results/{scenario.name}.json",
+                "summary": result_summary,
+            }
+        )
+
+    return {
+        "project": "autoSampler Public",
+        "tagline": "worker-style media label prescreen demo",
+        "hero": "docs/hero.svg",
+        "scenarios": scenarios,
+        "storyboards": [
+            "samples/results/stall_storyboard.jpg",
+            "samples/results/resolution_storyboard.jpg",
+            "samples/results/resolution_review_storyboard.jpg",
+        ],
+        "documents": [
+            "docs/architecture.md",
+            "docs/design-decisions.md",
+            "docs/showcase.md",
+            "docs/summary-cn-en.md",
         ],
     }
 
@@ -307,11 +364,13 @@ def score_heuristics(
 
     if work_duration <= 1.0:
         score -= 45
-        reasons.append("工作区间异常，无法形成有效时长。")
+        reasons.append("Work interval is invalid and cannot form a usable playback window.")
 
     total_stall_duration = 0.0
     longest_stall = 0.0
     invalid_stalls = 0
+    overlapping_stalls = 0
+    previous_end = None
     for stall in stalls:
         start = float(stall.get("start") or 0.0)
         end = float(stall.get("end") or 0.0)
@@ -323,32 +382,44 @@ def score_heuristics(
         longest_stall = max(longest_stall, duration)
         if work_duration > 1.0 and (start < work_start - 1.0 or end > work_end + 1.0):
             invalid_stalls += 1
+        if previous_end is not None and start < previous_end:
+            overlapping_stalls += 1
+        previous_end = max(previous_end or end, end)
 
     if invalid_stalls:
         score -= min(24, invalid_stalls * 8)
-        reasons.append(f"检测到 {invalid_stalls} 条 stall 标注越界或时长异常。")
+        reasons.append(f"Detected {invalid_stalls} stall labels with invalid timing or window overflow.")
+    if overlapping_stalls:
+        score -= min(12, overlapping_stalls * 4)
+        warnings.append(f"Detected {overlapping_stalls} overlapping stall intervals.")
 
     stall_ratio = total_stall_duration / work_duration if work_duration > 1.0 else None
     if stall_ratio is not None and stall_ratio > 0.7:
         score -= 10
-        warnings.append(f"stall 占比达到 {stall_ratio * 100:.1f}%，建议复核。")
-
+        warnings.append(f"Stall ratio reached {stall_ratio * 100:.1f}% of the working window.")
     if bandwidth_kbps is not None and bandwidth_kbps <= 200 and stall_ratio is not None and stall_ratio < 0.01:
         score -= 8
-        warnings.append("低带宽条件下几乎没有 stall，标签可能偏保守。")
+        warnings.append("Very low bandwidth produced almost no stall evidence.")
 
     if not resolutions:
         score -= 25
-        reasons.append("缺少 resolution 事件，无法确认清晰度变化链路。")
+        reasons.append("Resolution events are missing from label metadata.")
 
     if bandwidth_kbps is not None and resolutions:
-        last_raw = str(resolutions[-1].get("resolution_raw") or "")
-        if bandwidth_kbps <= 200 and "1080" in last_raw:
+        highest_raw = max(
+            (int(str(item.get("resolution_raw") or "0x0").split("x")[-1]) for item in resolutions if "x" in str(item.get("resolution_raw") or "")),
+            default=0,
+        )
+        final_raw = str(resolutions[-1].get("resolution_raw") or "")
+        if bandwidth_kbps <= 200 and "1080" in final_raw:
             score -= 8
-            warnings.append("低带宽下最终分辨率仍过高，建议复核。")
+            warnings.append("Final resolution remained unusually high for the available bandwidth.")
+        if bandwidth_kbps <= 200 and highest_raw >= 1080 and len(resolutions) == 1:
+            score -= 6
+            warnings.append("Resolution trajectory is too sparse for a constrained-network run.")
 
     if not video_info:
-        warnings.append("未获取到录屏元信息，本次仅基于结构化标签评分。")
+        warnings.append("Video metadata was unavailable; scoring used label metadata only.")
 
     score = max(0, min(100, score))
     if score >= 85:
@@ -375,19 +446,22 @@ def score_heuristics(
     }
 
 
-def _step(name: str, start_time: float, details: str) -> StepResult:
-    return StepResult(name=name, status="passed", duration_sec=round(perf_counter() - start_time, 3), details=details)
-
-
 def _scenario_unit_dir(name: str) -> Path:
-    scenario = SCENARIOS[name]
-    return SAMPLES / scenario.unit_dir
+    return SAMPLES / SCENARIOS[name].unit_dir
 
 
 def _artifact_path(output_dir: Path, path: Path | None) -> str | None:
     if path is None:
         return None
     return str(path.relative_to(ROOT))
+
+
+def _load_unit_assets(unit_dir: Path) -> tuple[dict[str, Any], dict[str, Any], Path]:
+    unit_id = unit_dir.name
+    description = load_json(unit_dir / f"{unit_id}_description.json")
+    labels = load_json(unit_dir / f"{unit_id}_label_infos.json")
+    video_path = unit_dir / f"{unit_id}_main_scrcpy.mp4"
+    return description, labels, video_path
 
 
 def run_demo_scenario(name: str) -> dict[str, Any]:
@@ -398,21 +472,28 @@ def run_demo_scenario(name: str) -> dict[str, Any]:
     unit_dir = _scenario_unit_dir(name)
     output_dir = TMP_ROOT / name
     output_dir.mkdir(parents=True, exist_ok=True)
-    steps: list[StepResult] = []
+    steps = []
+
+    selected_devices = select_devices(scenario.preferred_platforms, scenario.preferred_role)
 
     start = perf_counter()
-    description = load_json(unit_dir / "20260324190033_description.json")
-    labels = load_json(unit_dir / "20260324190033_label_infos.json")
-    steps.append(_step("load_unit_metadata", start, "Loaded description.json and label_infos.json"))
+    execution_plan = build_execution_plan(scenario, selected_devices)
+    steps.append(record_step("resolve_device", start, f"Selected {selected_devices[0]['device_id']} for {scenario.execution_profile}"))
 
     start = perf_counter()
-    video_path = unit_dir / "20260324190033_main_scrcpy.mp4"
+    description, labels, video_path = _load_unit_assets(unit_dir)
+    steps.append(record_step("load_unit_metadata", start))
+
+    start = perf_counter()
     video_info = ffprobe_video(video_path if video_path.exists() else None)
-    steps.append(_step("inspect_video_metadata", start, "Collected video duration, size, and dimensions"))
+    steps.append(record_step("inspect_video_metadata", start))
+
+    start = perf_counter()
+    steps.append(record_step("build_execution_plan", start, f"Expanded to {len(execution_plan['steps'])} execution steps"))
 
     start = perf_counter()
     heuristic = score_heuristics(description, labels, video_info)
-    steps.append(_step("score_heuristics", start, f"Computed rule score={heuristic['score']}"))
+    steps.append(record_step("score_heuristics", start, f"Computed rule score={heuristic['score']} and decision={heuristic['decision']}"))
 
     work_start = float(labels.get("work_start_time") or 0.0)
     work_end = float(labels.get("work_end_time") or 0.0)
@@ -434,7 +515,7 @@ def run_demo_scenario(name: str) -> dict[str, Any]:
             video_path=video_path,
             output_path=output_dir / "resolution_storyboard.jpg",
         )
-    steps.append(_step("render_storyboards", start, "Rendered storyboard artifacts when ffmpeg and Pillow were available"))
+    steps.append(record_step("render_storyboards", start))
 
     summary = {
         "unit_id": description.get("unit_id"),
@@ -455,12 +536,15 @@ def run_demo_scenario(name: str) -> dict[str, Any]:
             "resolution": labels.get("resolution") or [],
         },
         "heuristic": heuristic,
+        "execution_plan": execution_plan,
     }
 
     report = JobReport(
         scenario=asdict(scenario),
+        devices=selected_devices,
         execution={
             "status": "passed",
+            "profile": scenario.execution_profile,
             "steps": [step.to_dict() for step in steps],
         },
         metrics=metrics,
@@ -474,7 +558,7 @@ def run_demo_scenario(name: str) -> dict[str, Any]:
     report_md_path = output_dir / "report.md"
     dump_json(report_json_path, report_dict)
     report_md_path.write_text(render_markdown_report(report_dict), encoding="utf-8")
-    steps.append(_step("persist_report", start, "Persisted JSON and Markdown reports to tmp/demo_runs"))
+    steps.append(record_step("persist_report", start))
 
     report_dict["execution"]["steps"] = [step.to_dict() for step in steps]
     report_dict["artifacts"] = {
@@ -482,7 +566,7 @@ def run_demo_scenario(name: str) -> dict[str, Any]:
         "report_markdown": _artifact_path(output_dir, report_md_path),
         "stall_storyboard": _artifact_path(output_dir, stall_board),
         "resolution_storyboard": _artifact_path(output_dir, resolution_board),
-        "sample_payload": "samples/payloads/baseline_prescreen.json",
+        "sample_payload": f"samples/payloads/{name}.json",
         "sample_unit": str(unit_dir.relative_to(ROOT)),
     }
     dump_json(report_json_path, report_dict)
@@ -492,4 +576,3 @@ def run_demo_scenario(name: str) -> dict[str, Any]:
 
 def build_markdown_report(name: str) -> str:
     return render_markdown_report(run_demo_scenario(name))
-

@@ -1,0 +1,13 @@
+{
+  "unit_id": "20260324195510",
+  "task_type": "cloud_game_sampling",
+  "metric_type": "stall+resolution",
+  "dataset_type": "public_demo",
+  "requirement_scenario": "resolution consistency audit under constrained bandwidth",
+  "app_version": "demo-1.4.2",
+  "device_name": "Pixel 8 Pro",
+  "networkSide_down_param": {
+    "bandwidth": "180kbps"
+  }
+}
+

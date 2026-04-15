@@ -2,10 +2,13 @@ from __future__ import annotations
 
 from flask import Flask, jsonify, request
 
+from common.device_registry import list_devices
 from common.job_queue import enqueue_job, get_job, list_jobs, process_next_job
 from common.prescreen_runner import (
     build_markdown_report,
+    build_showcase_manifest,
     describe_architecture,
+    get_scenario,
     list_scenarios,
     run_demo_scenario,
 )
@@ -20,9 +23,23 @@ def register_routes(app: Flask) -> None:
     def scenarios():
         return jsonify({"scenarios": list_scenarios()})
 
+    @app.get("/demo/scenarios/<scenario_name>")
+    def scenario_detail(scenario_name: str):
+        return jsonify(get_scenario(scenario_name))
+
+    @app.get("/demo/devices")
+    def devices():
+        platform = request.args.get("platform")
+        role = request.args.get("role")
+        return jsonify({"devices": list_devices(platform=platform, role=role)})
+
     @app.get("/demo/architecture")
     def architecture():
         return jsonify(describe_architecture())
+
+    @app.get("/demo/showcase")
+    def showcase():
+        return jsonify(build_showcase_manifest())
 
     @app.get("/demo/jobs")
     def jobs():
@@ -59,4 +76,3 @@ def register_routes(app: Flask) -> None:
     def markdown_report():
         scenario = request.args.get("scenario", "baseline_prescreen")
         return build_markdown_report(scenario), 200, {"Content-Type": "text/markdown; charset=utf-8"}
-

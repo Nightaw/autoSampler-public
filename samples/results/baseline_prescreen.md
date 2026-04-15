@@ -1,6 +1,6 @@
 # Baseline Label Prescreen
 
-Mock prescreen service that evaluates a sampled unit, extracts stall and resolution evidence, and returns a structured review report.
+Mock prescreen worker that evaluates a sampled unit, extracts storyboard evidence, and emits structured review artifacts.
 
 ## Summary
 
@@ -10,19 +10,26 @@ Mock prescreen service that evaluates a sampled unit, extracts stall and resolut
 - Resolution events: 3
 - Work duration: 18.0s
 
+## Devices
+
+- `ios-lab-01` | ios 18.1 | iPhone 15 Pro | capture
+
 ## Execution Steps
 
-- `load_unit_metadata` | passed | 0.0s | Loaded description.json and label_infos.json
-- `inspect_video_metadata` | passed | 0.056s | Collected video duration, size, and dimensions
-- `score_heuristics` | passed | 0.0s | Computed rule score=100
-- `render_storyboards` | passed | 0.381s | Rendered storyboard artifacts when ffmpeg and Pillow were available
-- `persist_report` | passed | 0.0s | Persisted JSON and Markdown reports to tmp/demo_runs
+- `resolve_device` | passed | 0.0s | Selected ios-lab-01 for prescreen
+- `load_unit_metadata` | passed | 0.0s | Loaded unit description and label metadata into memory.
+- `inspect_video_metadata` | passed | 0.022s | Read recording duration, size, and frame rate via ffprobe.
+- `build_execution_plan` | passed | 0.0s | Expanded to 7 execution steps
+- `score_heuristics` | passed | 0.0s | Computed rule score=100 and decision=pass
+- `render_storyboards` | passed | 0.353s | Rendered storyboard evidence from selected video timestamps.
+- `persist_report` | passed | 0.0s | Wrote JSON and Markdown artifacts for downstream inspection.
 
 ## Metrics
 
 - Video duration: 18.0s
 - Longest stall: 1.6s
 - Bandwidth hint: 180 kbps
+- Execution profile: prescreen
 
 ## Artifacts
 

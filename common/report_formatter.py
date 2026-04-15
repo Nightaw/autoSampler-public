@@ -18,9 +18,19 @@ def render_markdown_report(report: dict) -> str:
         f"- Resolution events: {summary['resolution_count']}",
         f"- Work duration: {summary['work_duration_seconds']}s",
         "",
-        "## Execution Steps",
+        "## Devices",
         "",
     ]
+    for device in report["devices"]:
+        lines.append(
+            f"- `{device['device_id']}` | {device['platform']} {device['os_version']} | {device['model']} | {device['role']}"
+        )
+
+    lines.extend([
+        "",
+        "## Execution Steps",
+        "",
+    ])
     for step in report["execution"]["steps"]:
         lines.append(f"- `{step['name']}` | {step['status']} | {step['duration_sec']}s | {step['details']}")
 
@@ -28,6 +38,7 @@ def render_markdown_report(report: dict) -> str:
     lines.append(f"- Video duration: {metrics['video_info'].get('duration', 0.0)}s")
     lines.append(f"- Longest stall: {summary['longest_stall_seconds']}s")
     lines.append(f"- Bandwidth hint: {summary['bandwidth_kbps']} kbps")
+    lines.append(f"- Execution profile: {report['execution']['profile']}")
 
     if metrics["heuristic"]["reasons"]:
         lines.extend(["", "## Reasons", ""])
@@ -44,4 +55,3 @@ def render_markdown_report(report: dict) -> str:
         lines.append(f"- {key}: {value}")
 
     return "\n".join(lines)
-

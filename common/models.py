@@ -4,6 +4,20 @@ from dataclasses import asdict, dataclass, field
 
 
 @dataclass(frozen=True)
+class DeviceInfo:
+    device_id: str
+    platform: str
+    os_version: str
+    model: str
+    role: str
+    tags: tuple[str, ...] = ()
+    capabilities: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
 class ScenarioDefinition:
     name: str
     title: str
@@ -11,6 +25,9 @@ class ScenarioDefinition:
     unit_dir: str
     steps: tuple[str, ...]
     focus: tuple[str, ...]
+    preferred_platforms: tuple[str, ...]
+    preferred_role: str
+    execution_profile: str
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -30,6 +47,7 @@ class StepResult:
 @dataclass
 class JobReport:
     scenario: dict
+    devices: list[dict]
     execution: dict
     metrics: dict
     summary: dict
@@ -38,6 +56,7 @@ class JobReport:
     def to_dict(self) -> dict:
         return {
             "scenario": self.scenario,
+            "devices": self.devices,
             "execution": self.execution,
             "metrics": self.metrics,
             "summary": self.summary,
