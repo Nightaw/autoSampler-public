@@ -62,6 +62,7 @@ autoSampler-public/
 - `GET /demo/scenarios/<scenario_name>`
 - `GET /demo/architecture`
 - `GET /demo/showcase`
+- `GET /demo/artifacts`
 - `POST /demo/run`
 - `POST /demo/jobs`
 - `POST /demo/jobs/process`
@@ -124,6 +125,12 @@ python3 tools/build_visual_assets.py
 python3 tools/build_interview_brief.py
 ```
 
+### Build Deployable Site Bundle
+
+```bash
+python3 tools/build_site_bundle.py
+```
+
 ## Sample Artifacts
 
 - [baseline_prescreen.json](./samples/results/baseline_prescreen.json)
@@ -142,6 +149,7 @@ python3 tools/build_interview_brief.py
 - [Showcase Notes](./docs/showcase.md)
 - [Showcase Page](./docs/index.html)
 - [Interview Brief](./docs/interview-brief.md)
+- [Showcase Manifest](./docs/showcase_manifest.json)
 - [Bilingual Summary](./docs/summary-cn-en.md)
 - [Public Scope](./docs/public-scope.md)
 

@@ -158,6 +158,56 @@ def build_showcase_manifest() -> dict[str, Any]:
     }
 
 
+def build_artifact_manifest() -> dict[str, Any]:
+    scenario_items = []
+    for scenario in SCENARIOS.values():
+        result_path = ROOT / "samples" / "results" / f"{scenario.name}.json"
+        report = load_json(result_path) if result_path.exists() else {}
+        scenario_items.append(
+            {
+                "scenario": scenario.name,
+                "title": scenario.title,
+                "payload": f"samples/payloads/{scenario.name}.json",
+                "result_json": f"samples/results/{scenario.name}.json",
+                "result_markdown": f"samples/results/{scenario.name}.md",
+                "storyboards": [
+                    path
+                    for path in [
+                        report.get("artifacts", {}).get("stall_storyboard"),
+                        report.get("artifacts", {}).get("resolution_storyboard"),
+                    ]
+                    if path
+                ],
+                "summary": report.get("summary"),
+            }
+        )
+
+    return {
+        "project": "autoSampler Public",
+        "artifact_groups": {
+            "documents": [
+                "docs/index.html",
+                "docs/interview-brief.md",
+                "docs/architecture.md",
+                "docs/design-decisions.md",
+            ],
+            "generated_visuals": [
+                "docs/generated/architecture-export.svg",
+                "docs/generated/scenario-comparison.svg",
+                "docs/generated/device-capability-matrix.svg",
+                "docs/generated/baseline-timeline.svg",
+                "docs/generated/review-timeline.svg",
+            ],
+            "storyboards": [
+                "samples/results/stall_storyboard.jpg",
+                "samples/results/resolution_storyboard.jpg",
+                "samples/results/resolution_review_storyboard.jpg",
+            ],
+        },
+        "scenarios": scenario_items,
+    }
+
+
 def parse_frame_rate(raw_value: str) -> float | None:
     if not raw_value:
         return None

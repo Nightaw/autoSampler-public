@@ -5,6 +5,7 @@ from flask import Flask, jsonify, request
 from common.device_registry import list_devices
 from common.job_queue import enqueue_job, get_job, list_jobs, process_next_job
 from common.prescreen_runner import (
+    build_artifact_manifest,
     build_markdown_report,
     build_showcase_manifest,
     describe_architecture,
@@ -40,6 +41,10 @@ def register_routes(app: Flask) -> None:
     @app.get("/demo/showcase")
     def showcase():
         return jsonify(build_showcase_manifest())
+
+    @app.get("/demo/artifacts")
+    def artifacts():
+        return jsonify(build_artifact_manifest())
 
     @app.get("/demo/jobs")
     def jobs():

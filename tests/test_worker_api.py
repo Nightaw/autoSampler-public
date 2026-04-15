@@ -66,6 +66,13 @@ class WorkerApiTest(unittest.TestCase):
         data = response.get_json()
         self.assertEqual(data["project"], "autoSampler Public")
 
+    def test_artifacts(self) -> None:
+        response = self.client.get("/demo/artifacts")
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertEqual(data["project"], "autoSampler Public")
+        self.assertIn("generated_visuals", data["artifact_groups"])
+
     def test_job_lifecycle(self) -> None:
         created = self.client.post("/demo/jobs", json={"scenario": "baseline_prescreen"})
         self.assertEqual(created.status_code, 201)
