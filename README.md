@@ -131,6 +131,13 @@ python3 tools/build_interview_brief.py
 python3 tools/build_site_bundle.py
 ```
 
+### Build Contracts And Case Studies
+
+```bash
+python3 tools/build_contract_docs.py
+python3 tools/build_case_studies.py
+```
+
 ## Sample Artifacts
 
 - [baseline_prescreen.json](./samples/results/baseline_prescreen.json)
@@ -150,6 +157,8 @@ python3 tools/build_site_bundle.py
 - [Showcase Page](./docs/index.html)
 - [Interview Brief](./docs/interview-brief.md)
 - [Showcase Manifest](./docs/showcase_manifest.json)
+- [Scenario Templates](./docs/scenario-templates.json)
+- [Artifact Schema](./docs/artifact-schema.json)
 - [Bilingual Summary](./docs/summary-cn-en.md)
 - [Public Scope](./docs/public-scope.md)
 

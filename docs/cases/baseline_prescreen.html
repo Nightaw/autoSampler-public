@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Baseline Label Prescreen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../showcase.css" />
+    <style>
+      body { margin: 0; background: #f6f1e8; color: #1b1f20; font-family: "Space Grotesk", sans-serif; }
+      main { max-width: 1120px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+      h1, h2 { font-family: "Instrument Serif", serif; font-weight: 400; line-height: 0.96; }
+      h1 { font-size: clamp(3rem, 8vw, 5.8rem); margin: 0; max-width: 10ch; }
+      h2 { font-size: 2rem; margin: 0 0 1rem; }
+      p, li { line-height: 1.65; color: #505551; }
+      .top { display: grid; grid-template-columns: 1fr 0.9fr; gap: 2rem; align-items: end; }
+      .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+      .stats div { border-top: 1px solid rgba(27,31,32,0.12); padding-top: 0.8rem; }
+      .stats span { display: block; color: #6a6f69; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; }
+      .stats strong { display: block; margin-top: 0.4rem; font-size: 1.45rem; }
+      .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+      .panel { border: 1px solid rgba(27,31,32,0.12); border-radius: 1.4rem; background: rgba(255,255,255,0.5); padding: 1.25rem; }
+      .image-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+      .image-grid img { border-radius: 1rem; border: 1px solid rgba(27,31,32,0.12); background: #fff; }
+      .step-list, .flag-list { list-style: none; padding: 0; margin: 0; }
+      .step-list li, .flag-list li { padding: 0.8rem 0; border-top: 1px solid rgba(27,31,32,0.1); }
+      .back { display: inline-block; margin-bottom: 1rem; color: #476c9b; }
+      @media (max-width: 900px) { .top, .grid, .image-grid { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a class="back" href="../index.html">Back to showcase</a>
+      <section class="top">
+        <div>
+          <p class="eyebrow">prescreen</p>
+          <h1>Baseline Label Prescreen</h1>
+          <p>Mock prescreen worker that evaluates a sampled unit, extracts storyboard evidence, and emits structured review artifacts.</p>
+        </div>
+        <div class="stats">
+          <div><span>Decision</span><strong>PASS</strong></div>
+          <div><span>Score</span><strong>100</strong></div>
+          <div><span>Stalls</span><strong>2</strong></div>
+          <div><span>Resolution events</span><strong>3</strong></div>
+        </div>
+      </section>
+      <section class="grid">
+        <article class="panel">
+          <h2>Scenario summary</h2>
+          <p>Unit id: <code>20260324190033</code></p>
+          <p>Bandwidth: <code>180 kbps</code></p>
+          <p>Work duration: <code>18.0s</code></p>
+          <p>Device target: <code>ios-lab-01</code></p>
+        </article>
+        <article class="panel">
+          <h2>Execution plan</h2>
+          <p>Profile: <code>prescreen</code></p>
+          <p>Focus: <code>stall, resolution, report</code></p>
+          <p>Ordered steps: <code>resolve_device -&gt; build_execution_plan -&gt; load_unit_metadata -&gt; inspect_video_metadata -&gt; score_heuristics -&gt; render_storyboards -&gt; persist_report</code></p>
+        </article>
+      </section>
+      <section class="grid">
+        <article class="panel">
+          <h2>Evidence assets</h2>
+          <div class="image-grid">
+            <img src="../../samples/results/stall_storyboard.jpg" alt="storyboard one" />
+            <img src="../generated/baseline-timeline.svg" alt="timeline export" />
+          </div>
+        </article>
+        <article class="panel">
+          <h2>Execution trace</h2>
+          <ul class="step-list"><li><strong>resolve_device</strong><span>Selected ios-lab-01 for prescreen</span></li><li><strong>load_unit_metadata</strong><span>Loaded unit description and label metadata into memory.</span></li><li><strong>inspect_video_metadata</strong><span>Read recording duration, size, and frame rate via ffprobe.</span></li><li><strong>build_execution_plan</strong><span>Expanded to 7 execution steps</span></li><li><strong>score_heuristics</strong><span>Computed rule score=100 and decision=pass</span></li><li><strong>render_storyboards</strong><span>Rendered storyboard evidence from selected video timestamps.</span></li><li><strong>persist_report</strong><span>Wrote JSON and Markdown artifacts for downstream inspection.</span></li></ul>
+        </article>
+      </section>
+      <section class="grid">
+        <article class="panel">
+          <h2>Warnings</h2>
+          <ul class="flag-list"><li>No warnings in this scenario.</li></ul>
+        </article>
+        <article class="panel">
+          <h2>Reasons</h2>
+          <ul class="flag-list"><li>No hard rejection reasons were triggered.</li></ul>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

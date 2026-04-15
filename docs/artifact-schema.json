@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "autoSampler Public Artifact Manifest",
+  "type": "object",
+  "required": [
+    "project",
+    "artifact_groups",
+    "scenarios"
+  ],
+  "properties": {
+    "project": {
+      "type": "string"
+    },
+    "artifact_groups": {
+      "type": "object",
+      "required": [
+        "documents",
+        "generated_visuals",
+        "storyboards"
+      ],
+      "properties": {
+        "documents": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "generated_visuals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "storyboards": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "scenarios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "scenario",
+          "title",
+          "payload",
+          "result_json",
+          "result_markdown",
+          "storyboards"
+        ],
+        "properties": {
+          "scenario": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "string"
+          },
+          "result_json": {
+            "type": "string"
+          },
+          "result_markdown": {
+            "type": "string"
+          },
+          "storyboards": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "summary": {
+            "type": [
+              "object",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

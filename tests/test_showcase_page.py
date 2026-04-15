@@ -21,6 +21,8 @@ class ShowcasePageTest(unittest.TestCase):
         self.assertIn("../samples/results/stall_storyboard.jpg", html)
         self.assertIn("../docs/generated/scenario-comparison.svg", html)
         self.assertIn("../docs/interview-brief.md", html)
+        self.assertIn("./cases/baseline_prescreen.html", html)
+        self.assertIn("../docs/scenario-templates.json", html)
 
 
 

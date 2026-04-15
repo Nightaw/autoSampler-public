@@ -73,6 +73,19 @@ class WorkerApiTest(unittest.TestCase):
         self.assertEqual(data["project"], "autoSampler Public")
         self.assertIn("generated_visuals", data["artifact_groups"])
 
+    def test_templates(self) -> None:
+        response = self.client.get("/demo/templates")
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertEqual(data["project"], "autoSampler Public")
+        self.assertGreaterEqual(len(data["templates"]), 3)
+
+    def test_schemas(self) -> None:
+        response = self.client.get("/demo/schemas")
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertEqual(data["artifact_manifest"]["title"], "autoSampler Public Artifact Manifest")
+
     def test_job_lifecycle(self) -> None:
         created = self.client.post("/demo/jobs", json={"scenario": "baseline_prescreen"})
         self.assertEqual(created.status_code, 201)

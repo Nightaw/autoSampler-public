@@ -25,9 +25,11 @@ jobs:
       - name: Build showcase assets
         run: |
           python tools/export_showcase_bundle.py
+          python tools/build_contract_docs.py
           python tools/build_visual_assets.py
           python tools/build_interview_brief.py
           python tools/build_showcase_page.py
+          python tools/build_case_studies.py
           python tools/build_site_bundle.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

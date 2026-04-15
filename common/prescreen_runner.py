@@ -18,7 +18,7 @@ except ImportError:  # pragma: no cover - optional runtime dependency
     ImageOps = None
 
 from common.device_registry import list_devices, select_devices
-from common.models import JobReport, ScenarioDefinition
+from common.models import JobReport, ScenarioDefinition, ScenarioTemplate
 from common.report_formatter import render_markdown_report
 from common.scenario_runner import build_execution_plan, record_step
 
@@ -68,6 +68,56 @@ SCENARIOS: dict[str, ScenarioDefinition] = {
         preferred_platforms=("android", "ios"),
         preferred_role="capture",
         execution_profile="resolution_audit",
+    ),
+}
+
+SCENARIO_TEMPLATES: dict[str, ScenarioTemplate] = {
+    "capture_review_default": ScenarioTemplate(
+        template_id="capture_review_default",
+        title="Capture Review Default",
+        description="Default worker path for a recorded sample with balanced stall and resolution validation.",
+        scenario="baseline_prescreen",
+        steps=(
+            "resolve_device",
+            "build_execution_plan",
+            "load_unit_metadata",
+            "inspect_video_metadata",
+            "score_heuristics",
+            "render_storyboards",
+            "persist_report",
+        ),
+        outputs=("json_report", "markdown_report", "stall_storyboard", "resolution_storyboard"),
+        trigger="new_sample_unit",
+    ),
+    "resolution_regression_audit": ScenarioTemplate(
+        template_id="resolution_regression_audit",
+        title="Resolution Regression Audit",
+        description="Focused path for constrained-bandwidth cases where sparse resolution transitions need escalation.",
+        scenario="resolution_consistency_review",
+        steps=(
+            "resolve_device",
+            "load_unit_metadata",
+            "inspect_video_metadata",
+            "score_heuristics",
+            "render_storyboards",
+            "persist_report",
+        ),
+        outputs=("json_report", "markdown_report", "resolution_storyboard", "review_timeline"),
+        trigger="quality_regression_watch",
+    ),
+    "artifact_regeneration": ScenarioTemplate(
+        template_id="artifact_regeneration",
+        title="Artifact Regeneration",
+        description="Rebuild visual and report artifacts for an already-scored unit without modifying label content.",
+        scenario="baseline_prescreen",
+        steps=(
+            "load_unit_metadata",
+            "inspect_video_metadata",
+            "render_storyboards",
+            "persist_report",
+        ),
+        outputs=("json_report", "markdown_report", "generated_visuals"),
+        trigger="manual_refresh",
     ),
 }
 
@@ -135,6 +185,7 @@ def build_showcase_manifest() -> dict[str, Any]:
                 "focus": list(scenario.focus),
                 "payload": f"samples/payloads/{scenario.name}.json",
                 "result": f"samples/results/{scenario.name}.json",
+                "case_study": f"docs/cases/{scenario.name}.html",
                 "summary": result_summary,
             }
         )
@@ -155,6 +206,13 @@ def build_showcase_manifest() -> dict[str, Any]:
             "docs/showcase.md",
             "docs/summary-cn-en.md",
         ],
+    }
+
+
+def build_scenario_template_manifest() -> dict[str, Any]:
+    return {
+        "project": "autoSampler Public",
+        "templates": [template.to_dict() for template in SCENARIO_TEMPLATES.values()],
     }
 
 
@@ -205,6 +263,43 @@ def build_artifact_manifest() -> dict[str, Any]:
             ],
         },
         "scenarios": scenario_items,
+    }
+
+
+def build_artifact_schema() -> dict[str, Any]:
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "autoSampler Public Artifact Manifest",
+        "type": "object",
+        "required": ["project", "artifact_groups", "scenarios"],
+        "properties": {
+            "project": {"type": "string"},
+            "artifact_groups": {
+                "type": "object",
+                "required": ["documents", "generated_visuals", "storyboards"],
+                "properties": {
+                    "documents": {"type": "array", "items": {"type": "string"}},
+                    "generated_visuals": {"type": "array", "items": {"type": "string"}},
+                    "storyboards": {"type": "array", "items": {"type": "string"}},
+                },
+            },
+            "scenarios": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "required": ["scenario", "title", "payload", "result_json", "result_markdown", "storyboards"],
+                    "properties": {
+                        "scenario": {"type": "string"},
+                        "title": {"type": "string"},
+                        "payload": {"type": "string"},
+                        "result_json": {"type": "string"},
+                        "result_markdown": {"type": "string"},
+                        "storyboards": {"type": "array", "items": {"type": "string"}},
+                        "summary": {"type": ["object", "null"]},
+                    },
+                },
+            },
+        },
     }
 
 

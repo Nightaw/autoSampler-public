@@ -53,6 +53,7 @@ def scenario_markup(scenario: dict) -> str:
       <div class="scenario-links">
         <a href="{escape(rel(scenario.get("payload", "")))}">payload</a>
         <a href="{escape(rel(scenario.get("result", "")))}">result</a>
+        <a href="./cases/{escape(scenario.get("name", ""))}.html">case study</a>
       </div>
     </article>
     """
@@ -86,11 +87,14 @@ def build_html() -> str:
             "GET /demo/scenarios",
             "GET /demo/scenarios/<scenario_name>",
             "GET /demo/showcase",
+            "GET /demo/templates",
+            "GET /demo/schemas",
             "POST /demo/run",
             "POST /demo/jobs",
             "POST /demo/jobs/process",
         ]
     )
+    api_route_count = 9
     baseline_steps = "".join(
         f"<li><strong>{escape(step['name'])}</strong><span>{escape(step['details'])}</span></li>"
         for step in baseline["execution"]["steps"]
@@ -172,7 +176,7 @@ def build_html() -> str:
           </div>
           <div class="band-stats">
             <div><span>Scenarios</span><strong>{len(manifest['scenarios'])}</strong></div>
-            <div><span>API routes</span><strong>7</strong></div>
+            <div><span>API routes</span><strong>{api_route_count}</strong></div>
             <div><span>Tests</span><strong>{test_count}</strong></div>
             <div><span>Artifacts</span><strong>JSON + MD + JPG</strong></div>
           </div>
@@ -214,6 +218,29 @@ def build_html() -> str:
               <figcaption>Timeline export for stall windows and resolution transitions.</figcaption>
             </figure>
           </div>
+        </section>
+
+        <section class="detail-grid">
+          <article class="detail-panel reveal">
+            <p class="eyebrow">contracts</p>
+            <h2>Scenario templates and artifact schema make the demo look like an extensible framework slice.</h2>
+            <p>
+              The public repo now exports template manifests and artifact contracts so execution paths
+              and outputs can be described without reading Python first.
+            </p>
+            <div class="scenario-links">
+              <a href="../docs/scenario-templates.json">scenario templates</a>
+              <a href="../docs/artifact-schema.json">artifact schema</a>
+            </div>
+          </article>
+          <article class="detail-panel reveal">
+            <p class="eyebrow">case studies</p>
+            <h2>Each built-in scenario has a dedicated narrative page for interview walkthroughs.</h2>
+            <div class="scenario-links">
+              <a href="./cases/baseline_prescreen.html">baseline case</a>
+              <a href="./cases/resolution_consistency_review.html">review case</a>
+            </div>
+          </article>
         </section>
 
         <section class="scenario-section">

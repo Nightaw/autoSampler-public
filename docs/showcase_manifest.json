@@ -15,6 +15,7 @@
       ],
       "payload": "samples/payloads/baseline_prescreen.json",
       "result": "samples/results/baseline_prescreen.json",
+      "case_study": "docs/cases/baseline_prescreen.html",
       "summary": {
         "unit_id": "20260324190033",
         "final_decision": "pass",
@@ -40,6 +41,7 @@
       ],
       "payload": "samples/payloads/resolution_consistency_review.json",
       "result": "samples/results/resolution_consistency_review.json",
+      "case_study": "docs/cases/resolution_consistency_review.html",
       "summary": {
         "unit_id": "20260324195510",
         "final_decision": "review",

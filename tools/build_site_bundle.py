@@ -12,7 +12,13 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from common.prescreen_runner import build_artifact_manifest, build_showcase_manifest, load_json
+from common.prescreen_runner import (
+    build_artifact_manifest,
+    build_artifact_schema,
+    build_scenario_template_manifest,
+    build_showcase_manifest,
+    load_json,
+)
 from tools.build_interview_brief import build_markdown as build_interview_markdown
 from tools.build_showcase_page import build_html
 
@@ -140,6 +146,8 @@ def rewrite_showcase_for_site(html: str) -> str:
         "../README.md": "https://github.com/Nightaw/autoSampler-public",
         "../docs/architecture.md": "./documents/architecture.html",
         "../docs/interview-brief.md": "./interview-brief.html",
+        "../docs/scenario-templates.json": "./data/scenario_templates.json",
+        "../docs/artifact-schema.json": "./data/artifact_schema.json",
         "../docs/generated/architecture-export.svg": "./assets/generated/architecture-export.svg",
         "../docs/generated/scenario-comparison.svg": "./assets/generated/scenario-comparison.svg",
         "../docs/generated/device-capability-matrix.svg": "./assets/generated/device-capability-matrix.svg",
@@ -160,7 +168,14 @@ def rewrite_showcase_for_site(html: str) -> str:
     return html
 
 
-def build_case_page(report_name: str) -> str:
+def build_case_page(
+    report_name: str,
+    *,
+    stylesheet_href: str,
+    back_href: str,
+    storyboard_href: str,
+    timeline_href: str,
+) -> str:
     report = load_json(ROOT / "samples" / "results" / report_name)
     summary = report["summary"]
     warnings = "".join(f"<li>{escape(item)}</li>" for item in report["metrics"]["heuristic"]["warnings"])
@@ -181,7 +196,7 @@ def build_case_page(report_name: str) -> str:
       href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../showcase.css" />
+    <link rel="stylesheet" href="{escape(stylesheet_href)}" />
     <style>
       body {{ margin: 0; background: #f6f1e8; color: #1b1f20; font-family: "Space Grotesk", sans-serif; }}
       main {{ max-width: 1120px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }}
@@ -206,7 +221,7 @@ def build_case_page(report_name: str) -> str:
   </head>
   <body>
     <main>
-      <a class="back" href="../index.html">Back to showcase</a>
+      <a class="back" href="{escape(back_href)}">Back to showcase</a>
       <section class="top">
         <div>
           <p class="eyebrow">{escape(report['scenario']['execution_profile'])}</p>
@@ -239,8 +254,8 @@ def build_case_page(report_name: str) -> str:
         <article class="panel">
           <h2>Evidence assets</h2>
           <div class="image-grid">
-            <img src="../assets/results/{'stall_storyboard.jpg' if report_name == 'baseline_prescreen.json' else 'resolution_review_storyboard.jpg'}" alt="storyboard one" />
-            <img src="../assets/generated/{'baseline-timeline.svg' if report_name == 'baseline_prescreen.json' else 'review-timeline.svg'}" alt="timeline export" />
+            <img src="{escape(storyboard_href)}" alt="storyboard one" />
+            <img src="{escape(timeline_href)}" alt="timeline export" />
           </div>
         </article>
         <article class="panel">
@@ -301,13 +316,35 @@ def main() -> int:
 
     manifest = build_showcase_manifest()
     artifact_manifest = build_artifact_manifest()
+    template_manifest = build_scenario_template_manifest()
+    artifact_schema = build_artifact_schema()
     (SITE / "data" / "showcase_manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
     (SITE / "data" / "artifact_manifest.json").write_text(json.dumps(artifact_manifest, indent=2, ensure_ascii=False), encoding="utf-8")
+    (SITE / "data" / "scenario_templates.json").write_text(json.dumps(template_manifest, indent=2, ensure_ascii=False), encoding="utf-8")
+    (SITE / "data" / "artifact_schema.json").write_text(json.dumps(artifact_schema, indent=2, ensure_ascii=False), encoding="utf-8")
 
     (SITE / "index.html").write_text(rewrite_showcase_for_site(build_html()), encoding="utf-8")
     (SITE / "cases").mkdir(parents=True, exist_ok=True)
-    (SITE / "cases" / "baseline_prescreen.html").write_text(build_case_page("baseline_prescreen.json"), encoding="utf-8")
-    (SITE / "cases" / "resolution_consistency_review.html").write_text(build_case_page("resolution_consistency_review.json"), encoding="utf-8")
+    (SITE / "cases" / "baseline_prescreen.html").write_text(
+        build_case_page(
+            "baseline_prescreen.json",
+            stylesheet_href="../showcase.css",
+            back_href="../index.html",
+            storyboard_href="../assets/results/stall_storyboard.jpg",
+            timeline_href="../assets/generated/baseline-timeline.svg",
+        ),
+        encoding="utf-8",
+    )
+    (SITE / "cases" / "resolution_consistency_review.html").write_text(
+        build_case_page(
+            "resolution_consistency_review.json",
+            stylesheet_href="../showcase.css",
+            back_href="../index.html",
+            storyboard_href="../assets/results/resolution_review_storyboard.jpg",
+            timeline_href="../assets/generated/review-timeline.svg",
+        ),
+        encoding="utf-8",
+    )
     print(SITE)
     return 0
 

@@ -72,8 +72,8 @@
           </div>
           <div class="band-stats">
             <div><span>Scenarios</span><strong>2</strong></div>
-            <div><span>API routes</span><strong>7</strong></div>
-            <div><span>Tests</span><strong>23</strong></div>
+            <div><span>API routes</span><strong>9</strong></div>
+            <div><span>Tests</span><strong>27</strong></div>
             <div><span>Artifacts</span><strong>JSON + MD + JPG</strong></div>
           </div>
         </section>
@@ -116,6 +116,29 @@
           </div>
         </section>
 
+        <section class="detail-grid">
+          <article class="detail-panel reveal">
+            <p class="eyebrow">contracts</p>
+            <h2>Scenario templates and artifact schema make the demo look like an extensible framework slice.</h2>
+            <p>
+              The public repo now exports template manifests and artifact contracts so execution paths
+              and outputs can be described without reading Python first.
+            </p>
+            <div class="scenario-links">
+              <a href="../docs/scenario-templates.json">scenario templates</a>
+              <a href="../docs/artifact-schema.json">artifact schema</a>
+            </div>
+          </article>
+          <article class="detail-panel reveal">
+            <p class="eyebrow">case studies</p>
+            <h2>Each built-in scenario has a dedicated narrative page for interview walkthroughs.</h2>
+            <div class="scenario-links">
+              <a href="./cases/baseline_prescreen.html">baseline case</a>
+              <a href="./cases/resolution_consistency_review.html">review case</a>
+            </div>
+          </article>
+        </section>
+
         <section class="scenario-section">
           <div class="section-head reveal">
             <p class="eyebrow">scenarios</p>
@@ -139,6 +162,7 @@
       <div class="scenario-links">
         <a href="../samples/payloads/baseline_prescreen.json">payload</a>
         <a href="../samples/results/baseline_prescreen.json">result</a>
+        <a href="./cases/baseline_prescreen.html">case study</a>
       </div>
     </article>
     
@@ -160,6 +184,7 @@
       <div class="scenario-links">
         <a href="../samples/payloads/resolution_consistency_review.json">payload</a>
         <a href="../samples/results/resolution_consistency_review.json">result</a>
+        <a href="./cases/resolution_consistency_review.html">case study</a>
       </div>
     </article>
     </div>
@@ -226,7 +251,7 @@
             <h2>The same demo is exposed through CLI, queue simulation, and API endpoints.</h2>
           </div>
           <div class="api-layout">
-            <ul class="route-list reveal"><li><code>GET /demo/devices</code></li><li><code>GET /demo/scenarios</code></li><li><code>GET /demo/scenarios/&lt;scenario_name&gt;</code></li><li><code>GET /demo/showcase</code></li><li><code>POST /demo/run</code></li><li><code>POST /demo/jobs</code></li><li><code>POST /demo/jobs/process</code></li></ul>
+            <ul class="route-list reveal"><li><code>GET /demo/devices</code></li><li><code>GET /demo/scenarios</code></li><li><code>GET /demo/scenarios/&lt;scenario_name&gt;</code></li><li><code>GET /demo/showcase</code></li><li><code>GET /demo/templates</code></li><li><code>GET /demo/schemas</code></li><li><code>POST /demo/run</code></li><li><code>POST /demo/jobs</code></li><li><code>POST /demo/jobs/process</code></li></ul>
             <div class="terminal reveal">
 <pre><code>python3 tools/run_worker_server.py
 curl -X POST http://127.0.0.1:7777/demo/run \

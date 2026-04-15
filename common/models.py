@@ -34,6 +34,20 @@ class ScenarioDefinition:
 
 
 @dataclass(frozen=True)
+class ScenarioTemplate:
+    template_id: str
+    title: str
+    description: str
+    scenario: str
+    steps: tuple[str, ...]
+    outputs: tuple[str, ...]
+    trigger: str
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
 class StepResult:
     name: str
     status: str
@@ -62,4 +76,3 @@ class JobReport:
             "summary": self.summary,
             "artifacts": self.artifacts,
         }
-

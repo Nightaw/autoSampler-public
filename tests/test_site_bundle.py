@@ -26,7 +26,13 @@ class SiteBundleTest(unittest.TestCase):
         self.assertIn("<li>one</li>", html)
 
     def test_case_page_contains_summary(self) -> None:
-        html = build_case_page("baseline_prescreen.json")
+        html = build_case_page(
+            "baseline_prescreen.json",
+            stylesheet_href="../showcase.css",
+            back_href="../index.html",
+            storyboard_href="../assets/results/stall_storyboard.jpg",
+            timeline_href="../assets/generated/baseline-timeline.svg",
+        )
         self.assertIn("Baseline Label Prescreen", html)
         self.assertIn("Execution trace", html)
 

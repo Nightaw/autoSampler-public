@@ -1,0 +1,66 @@
+{
+  "project": "autoSampler Public",
+  "templates": [
+    {
+      "template_id": "capture_review_default",
+      "title": "Capture Review Default",
+      "description": "Default worker path for a recorded sample with balanced stall and resolution validation.",
+      "scenario": "baseline_prescreen",
+      "steps": [
+        "resolve_device",
+        "build_execution_plan",
+        "load_unit_metadata",
+        "inspect_video_metadata",
+        "score_heuristics",
+        "render_storyboards",
+        "persist_report"
+      ],
+      "outputs": [
+        "json_report",
+        "markdown_report",
+        "stall_storyboard",
+        "resolution_storyboard"
+      ],
+      "trigger": "new_sample_unit"
+    },
+    {
+      "template_id": "resolution_regression_audit",
+      "title": "Resolution Regression Audit",
+      "description": "Focused path for constrained-bandwidth cases where sparse resolution transitions need escalation.",
+      "scenario": "resolution_consistency_review",
+      "steps": [
+        "resolve_device",
+        "load_unit_metadata",
+        "inspect_video_metadata",
+        "score_heuristics",
+        "render_storyboards",
+        "persist_report"
+      ],
+      "outputs": [
+        "json_report",
+        "markdown_report",
+        "resolution_storyboard",
+        "review_timeline"
+      ],
+      "trigger": "quality_regression_watch"
+    },
+    {
+      "template_id": "artifact_regeneration",
+      "title": "Artifact Regeneration",
+      "description": "Rebuild visual and report artifacts for an already-scored unit without modifying label content.",
+      "scenario": "baseline_prescreen",
+      "steps": [
+        "load_unit_metadata",
+        "inspect_video_metadata",
+        "render_storyboards",
+        "persist_report"
+      ],
+      "outputs": [
+        "json_report",
+        "markdown_report",
+        "generated_visuals"
+      ],
+      "trigger": "manual_refresh"
+    }
+  ]
+}
