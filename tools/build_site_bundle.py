@@ -13,6 +13,8 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from common.prescreen_runner import (
+    build_agent_ecosystem_manifest,
+    build_agent_handoff_manifest,
     build_artifact_manifest,
     build_artifact_schema,
     build_scenario_template_manifest,
@@ -146,9 +148,13 @@ def rewrite_showcase_for_site(html: str) -> str:
         "../README.md": "https://github.com/Nightaw/autoSampler-public",
         "../docs/architecture.md": "./documents/architecture.html",
         "../docs/interview-brief.md": "./interview-brief.html",
+        "../docs/agent-collaboration.md": "./documents/agent-collaboration.html",
+        "../docs/agent-ecosystem.json": "./data/agent_ecosystem.json",
+        "../docs/agent-handoffs.json": "./data/agent_handoffs.json",
         "../docs/scenario-templates.json": "./data/scenario_templates.json",
         "../docs/artifact-schema.json": "./data/artifact_schema.json",
         "../docs/generated/architecture-export.svg": "./assets/generated/architecture-export.svg",
+        "../docs/generated/agent-ecosystem.svg": "./assets/generated/agent-ecosystem.svg",
         "../docs/generated/scenario-comparison.svg": "./assets/generated/scenario-comparison.svg",
         "../docs/generated/device-capability-matrix.svg": "./assets/generated/device-capability-matrix.svg",
         "../docs/generated/baseline-timeline.svg": "./assets/generated/baseline-timeline.svg",
@@ -335,11 +341,13 @@ def main() -> int:
     copy_tree(ROOT / "samples" / "results", SITE / "data" / "results")
 
     architecture_html = markdown_to_html((ROOT / "docs" / "architecture.md").read_text(encoding="utf-8"), "Architecture")
+    agent_html = markdown_to_html((ROOT / "docs" / "agent-collaboration.md").read_text(encoding="utf-8"), "Agent Collaboration")
     design_html = markdown_to_html((ROOT / "docs" / "design-decisions.md").read_text(encoding="utf-8"), "Design Decisions")
     interview_html = markdown_to_html(build_interview_markdown(), "Interview Brief")
 
     (SITE / "documents").mkdir(parents=True, exist_ok=True)
     (SITE / "documents" / "architecture.html").write_text(architecture_html, encoding="utf-8")
+    (SITE / "documents" / "agent-collaboration.html").write_text(agent_html, encoding="utf-8")
     (SITE / "documents" / "design-decisions.html").write_text(design_html, encoding="utf-8")
     (SITE / "interview-brief.html").write_text(interview_html, encoding="utf-8")
 
@@ -347,10 +355,14 @@ def main() -> int:
     artifact_manifest = build_artifact_manifest()
     template_manifest = build_scenario_template_manifest()
     artifact_schema = build_artifact_schema()
+    agent_ecosystem = build_agent_ecosystem_manifest()
+    agent_handoffs = build_agent_handoff_manifest()
     (SITE / "data" / "showcase_manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
     (SITE / "data" / "artifact_manifest.json").write_text(json.dumps(artifact_manifest, indent=2, ensure_ascii=False), encoding="utf-8")
     (SITE / "data" / "scenario_templates.json").write_text(json.dumps(template_manifest, indent=2, ensure_ascii=False), encoding="utf-8")
     (SITE / "data" / "artifact_schema.json").write_text(json.dumps(artifact_schema, indent=2, ensure_ascii=False), encoding="utf-8")
+    (SITE / "data" / "agent_ecosystem.json").write_text(json.dumps(agent_ecosystem, indent=2, ensure_ascii=False), encoding="utf-8")
+    (SITE / "data" / "agent_handoffs.json").write_text(json.dumps(agent_handoffs, indent=2, ensure_ascii=False), encoding="utf-8")
 
     (SITE / "index.html").write_text(rewrite_showcase_for_site(build_html()), encoding="utf-8")
     (SITE / "cases").mkdir(parents=True, exist_ok=True)

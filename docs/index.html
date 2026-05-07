@@ -72,8 +72,8 @@
           </div>
           <div class="band-stats">
             <div><span>Scenarios</span><strong>2</strong></div>
-            <div><span>API routes</span><strong>9</strong></div>
-            <div><span>Tests</span><strong>27</strong></div>
+            <div><span>API routes</span><strong>11</strong></div>
+            <div><span>Tests</span><strong>32</strong></div>
             <div><span>Artifacts</span><strong>JSON + MD + JPG</strong></div>
           </div>
         </section>
@@ -137,6 +137,58 @@
               <a href="./cases/resolution_consistency_review.html">review case</a>
             </div>
           </article>
+        </section>
+
+        <section class="split-section">
+          <div class="section-head reveal">
+            <p class="eyebrow">agent collaboration</p>
+            <h2>Three repositories are framed as one agent-ready workflow, not three unrelated uploads.</h2>
+          </div>
+          <div class="arch-layout">
+            <div class="arch-side reveal">
+              <img src="../docs/generated/agent-ecosystem.svg" alt="agent-ready repository ecosystem" />
+              <p>
+                The public surface separates orchestration, worker execution, and sample-review evidence.
+                This lets the interview walkthrough explain repository boundaries before diving into code.
+              </p>
+              <div class="scenario-links">
+                <a href="../docs/agent-collaboration.md">collaboration note</a>
+                <a href="../docs/agent-ecosystem.json">ecosystem manifest</a>
+                <a href="../docs/agent-handoffs.json">handoff map</a>
+              </div>
+            </div>
+            <div class="scenario-grid reveal">
+        <article class="detail-panel">
+          <p class="eyebrow">published</p>
+          <h3>autoscript-public</h3>
+          <p>worker runtime and playback automation facade</p>
+          <p>accepts planned automation work and returns structured worker reports</p>
+          <div class="scenario-links">
+            <a href="https://github.com/Nightaw/autoscript-public">GitHub</a>
+          </div>
+        </article>
+        
+        <article class="detail-panel">
+          <p class="eyebrow">published</p>
+          <h3>autoSampler-public</h3>
+          <p>post-capture sampling, review evidence, and artifact packaging layer</p>
+          <p>turns captured media units into review decisions, images, JSON, Markdown, and site artifacts</p>
+          <div class="scenario-links">
+            <a href="https://github.com/Nightaw/autoSampler-public">GitHub</a>
+          </div>
+        </article>
+        
+        <article class="detail-panel">
+          <p class="eyebrow">planned public release</p>
+          <h3>clawscript</h3>
+          <p>agent workflow orchestration and multi-repository coordination layer</p>
+          <p>coordinates which repo should execute, review, package, or publish each step</p>
+          <div class="scenario-links">
+            <span>public release planned</span>
+          </div>
+        </article>
+        </div>
+          </div>
         </section>
 
         <section class="scenario-section">
@@ -267,7 +319,7 @@
             <h2>The same demo is exposed through CLI, queue simulation, and API endpoints.</h2>
           </div>
           <div class="api-layout">
-            <ul class="route-list reveal"><li><code>GET /demo/devices</code></li><li><code>GET /demo/scenarios</code></li><li><code>GET /demo/scenarios/&lt;scenario_name&gt;</code></li><li><code>GET /demo/showcase</code></li><li><code>GET /demo/templates</code></li><li><code>GET /demo/schemas</code></li><li><code>POST /demo/run</code></li><li><code>POST /demo/jobs</code></li><li><code>POST /demo/jobs/process</code></li></ul>
+            <ul class="route-list reveal"><li><code>GET /demo/devices</code></li><li><code>GET /demo/scenarios</code></li><li><code>GET /demo/scenarios/&lt;scenario_name&gt;</code></li><li><code>GET /demo/showcase</code></li><li><code>GET /demo/ecosystem</code></li><li><code>GET /demo/agent-handoffs</code></li><li><code>GET /demo/templates</code></li><li><code>GET /demo/schemas</code></li><li><code>POST /demo/run</code></li><li><code>POST /demo/jobs</code></li><li><code>POST /demo/jobs/process</code></li></ul>
             <div class="terminal reveal">
 <pre><code>python3 tools/run_worker_server.py
 curl -X POST http://127.0.0.1:7777/demo/run \

@@ -11,7 +11,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 
-from common.prescreen_runner import build_showcase_manifest
+from common.prescreen_runner import build_agent_ecosystem_manifest, build_showcase_manifest
 
 
 def load_json(path: Path) -> dict:
@@ -61,6 +61,7 @@ def scenario_markup(scenario: dict) -> str:
 
 def build_html() -> str:
     manifest = build_showcase_manifest()
+    ecosystem = build_agent_ecosystem_manifest()
     baseline = load_json(ROOT / "samples" / "results" / "baseline_prescreen.json")
     review = load_json(ROOT / "samples" / "results" / "resolution_consistency_review.json")
     test_count = count_tests()
@@ -87,6 +88,8 @@ def build_html() -> str:
             "GET /demo/scenarios",
             "GET /demo/scenarios/<scenario_name>",
             "GET /demo/showcase",
+            "GET /demo/ecosystem",
+            "GET /demo/agent-handoffs",
             "GET /demo/templates",
             "GET /demo/schemas",
             "POST /demo/run",
@@ -94,7 +97,7 @@ def build_html() -> str:
             "POST /demo/jobs/process",
         ]
     )
-    api_route_count = 9
+    api_route_count = 11
     baseline_steps = "".join(
         f"<li><strong>{escape(step['name'])}</strong><span>{escape(step['details'])}</span></li>"
         for step in baseline["execution"]["steps"]
@@ -109,6 +112,20 @@ def build_html() -> str:
             f"<li><span>Artifact role</span><strong>baseline proof vs escalation evidence</strong></li>",
             f"<li><span>Interview use</span><strong>happy path vs review path</strong></li>",
         ]
+    )
+    ecosystem_cards = "".join(
+        f"""
+        <article class="detail-panel">
+          <p class="eyebrow">{escape(str(repo['status']).replace('_', ' '))}</p>
+          <h3>{escape(repo['name'])}</h3>
+          <p>{escape(repo['role'])}</p>
+          <p>{escape(repo['handoff'])}</p>
+          <div class="scenario-links">
+            {f'<a href="{escape(repo["url"])}">GitHub</a>' if repo.get("url") else '<span>public release planned</span>'}
+          </div>
+        </article>
+        """
+        for repo in ecosystem["repositories"]
     )
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -249,6 +266,28 @@ def build_html() -> str:
               <a href="./cases/resolution_consistency_review.html">review case</a>
             </div>
           </article>
+        </section>
+
+        <section class="split-section">
+          <div class="section-head reveal">
+            <p class="eyebrow">agent collaboration</p>
+            <h2>Three repositories are framed as one agent-ready workflow, not three unrelated uploads.</h2>
+          </div>
+          <div class="arch-layout">
+            <div class="arch-side reveal">
+              <img src="../docs/generated/agent-ecosystem.svg" alt="agent-ready repository ecosystem" />
+              <p>
+                The public surface separates orchestration, worker execution, and sample-review evidence.
+                This lets the interview walkthrough explain repository boundaries before diving into code.
+              </p>
+              <div class="scenario-links">
+                <a href="../docs/agent-collaboration.md">collaboration note</a>
+                <a href="../docs/agent-ecosystem.json">ecosystem manifest</a>
+                <a href="../docs/agent-handoffs.json">handoff map</a>
+              </div>
+            </div>
+            <div class="scenario-grid reveal">{ecosystem_cards}</div>
+          </div>
         </section>
 
         <section class="scenario-section">

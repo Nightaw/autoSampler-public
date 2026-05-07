@@ -5,6 +5,8 @@ from flask import Flask, jsonify, request
 from common.device_registry import list_devices
 from common.job_queue import enqueue_job, get_job, list_jobs, process_next_job
 from common.prescreen_runner import (
+    build_agent_ecosystem_manifest,
+    build_agent_handoff_manifest,
     build_artifact_manifest,
     build_artifact_schema,
     build_markdown_report,
@@ -47,6 +49,14 @@ def register_routes(app: Flask) -> None:
     @app.get("/demo/artifacts")
     def artifacts():
         return jsonify(build_artifact_manifest())
+
+    @app.get("/demo/ecosystem")
+    def ecosystem():
+        return jsonify(build_agent_ecosystem_manifest())
+
+    @app.get("/demo/agent-handoffs")
+    def agent_handoffs():
+        return jsonify(build_agent_handoff_manifest())
 
     @app.get("/demo/templates")
     def templates():

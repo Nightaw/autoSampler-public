@@ -63,6 +63,7 @@
   ],
   "documents": [
     "docs/architecture.md",
+    "docs/agent-collaboration.md",
     "docs/design-decisions.md",
     "docs/showcase.md",
     "docs/summary-cn-en.md"

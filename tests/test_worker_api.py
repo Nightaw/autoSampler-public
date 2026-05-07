@@ -73,6 +73,20 @@ class WorkerApiTest(unittest.TestCase):
         self.assertEqual(data["project"], "autoSampler Public")
         self.assertIn("generated_visuals", data["artifact_groups"])
 
+    def test_ecosystem(self) -> None:
+        response = self.client.get("/demo/ecosystem")
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertEqual(data["title"], "Agent-ready three-repository ecosystem")
+        self.assertIn("autoSampler-public", [repo["name"] for repo in data["repositories"]])
+
+    def test_agent_handoffs(self) -> None:
+        response = self.client.get("/demo/agent-handoffs")
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertEqual(data["title"], "Agent handoff map")
+        self.assertIn("package-evidence", [item["stage"] for item in data["handoffs"]])
+
     def test_templates(self) -> None:
         response = self.client.get("/demo/templates")
         self.assertEqual(response.status_code, 200)

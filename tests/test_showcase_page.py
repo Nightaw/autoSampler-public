@@ -23,6 +23,10 @@ class ShowcasePageTest(unittest.TestCase):
         self.assertIn("../docs/interview-brief.md", html)
         self.assertIn("./cases/baseline_prescreen.html", html)
         self.assertIn("../docs/scenario-templates.json", html)
+        self.assertIn("../docs/generated/agent-ecosystem.svg", html)
+        self.assertIn("GET /demo/ecosystem", html)
+        self.assertIn("autoscript-public", html)
+        self.assertIn("clawscript", html)
 
 
 

@@ -13,6 +13,7 @@ Primary entry points:
 - [README](./README.md)
 - [Architecture](./docs/architecture.md)
 - [Interview Brief](./docs/interview-brief.md)
+- [Agent Collaboration](./docs/agent-collaboration.md)
 
 ## Highlights
 
@@ -21,6 +22,7 @@ Primary entry points:
 - Stall / resolution heuristic scoring
 - Storyboard generation from sample recordings
 - JSON and Markdown report artifacts
+- Agent-ready multi-repository collaboration manifest
 - Unit tests and GitHub Actions CI
 
 ## Pipeline
@@ -36,6 +38,16 @@ flowchart LR
     F --> G["Markdown Summary"]
     F --> H["Flask Worker API"]
 ```
+
+## Agent Collaboration Surface
+
+The public portfolio is organized as a three-repository system:
+
+- [`autoscript-public`](https://github.com/Nightaw/autoscript-public): worker runtime and playback automation facade.
+- [`autoSampler-public`](https://github.com/Nightaw/autoSampler-public): post-capture sampling, review evidence, and artifact packaging layer.
+- `clawscript`: planned public orchestration layer for agent task decomposition and repository handoffs.
+
+The collaboration contract is documented through [Agent Collaboration](./docs/agent-collaboration.md), [agent-ecosystem.json](./docs/agent-ecosystem.json), and [agent-handoffs.json](./docs/agent-handoffs.json).
 
 ## Repository Layout
 
@@ -63,6 +75,10 @@ autoSampler-public/
 - `GET /demo/architecture`
 - `GET /demo/showcase`
 - `GET /demo/artifacts`
+- `GET /demo/ecosystem`
+- `GET /demo/agent-handoffs`
+- `GET /demo/templates`
+- `GET /demo/schemas`
 - `POST /demo/run`
 - `POST /demo/jobs`
 - `POST /demo/jobs/process`
@@ -123,6 +139,7 @@ python3 tools/build_showcase_page.py
 ```bash
 python3 tools/build_visual_assets.py
 python3 tools/build_interview_brief.py
+python3 tools/build_agent_docs.py
 ```
 
 ### Build Deployable Site Bundle
@@ -156,9 +173,12 @@ python3 tools/build_case_studies.py
 - [Showcase Notes](./docs/showcase.md)
 - [Showcase Page](./docs/index.html)
 - [Interview Brief](./docs/interview-brief.md)
+- [Agent Collaboration](./docs/agent-collaboration.md)
 - [Showcase Manifest](./docs/showcase_manifest.json)
 - [Scenario Templates](./docs/scenario-templates.json)
 - [Artifact Schema](./docs/artifact-schema.json)
+- [Agent Ecosystem](./docs/agent-ecosystem.json)
+- [Agent Handoffs](./docs/agent-handoffs.json)
 - [Bilingual Summary](./docs/summary-cn-en.md)
 - [Public Scope](./docs/public-scope.md)
 

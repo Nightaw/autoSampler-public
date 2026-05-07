@@ -1,0 +1,50 @@
+<svg width="1200" height="850" viewBox="0 0 1200 850" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="1200" height="850" rx="28" fill="#FBF8F2"/>
+
+<text x="72" y="84" fill="#1B1F20" font-family="Georgia, serif" font-size="40">agent-ready repository system</text>
+<text x="72" y="116" fill="#5F625B" font-family="Helvetica, Arial, sans-serif" font-size="18">orchestration, automation execution, and review evidence as connected public surfaces</text>
+
+<rect x="72" y="170" width="320" height="240" rx="24" fill="#183A37"/>
+<text x="98" y="220" fill="#FFFDF6" font-family="Helvetica, Arial, sans-serif" font-size="25" font-weight="700">autoscript-public</text>
+<text x="98" y="252" fill="#EDEAE0" font-family="Helvetica, Arial, sans-serif" font-size="15">published</text>
+<text x="98" y="294" fill="#FFFDF6" font-family="Helvetica, Arial, sans-serif" font-size="17">worker runtime and playback automation facade</text>
+<text x="98" y="350" fill="#EDEAE0" font-family="Helvetica, Arial, sans-serif" font-size="15">GitHub</text>
+
+<rect x="440" y="170" width="320" height="240" rx="24" fill="#476C9B"/>
+<text x="466" y="220" fill="#FFFDF6" font-family="Helvetica, Arial, sans-serif" font-size="25" font-weight="700">autoSampler-public</text>
+<text x="466" y="252" fill="#EDEAE0" font-family="Helvetica, Arial, sans-serif" font-size="15">published</text>
+<text x="466" y="294" fill="#FFFDF6" font-family="Helvetica, Arial, sans-serif" font-size="17">post-capture sampling, review evidence, and artifact packaging layer</text>
+<text x="466" y="350" fill="#EDEAE0" font-family="Helvetica, Arial, sans-serif" font-size="15">GitHub</text>
+
+<rect x="808" y="170" width="320" height="240" rx="24" fill="#BF4C2F"/>
+<text x="834" y="220" fill="#FFFDF6" font-family="Helvetica, Arial, sans-serif" font-size="25" font-weight="700">clawscript</text>
+<text x="834" y="252" fill="#EDEAE0" font-family="Helvetica, Arial, sans-serif" font-size="15">planned public release</text>
+<text x="834" y="294" fill="#FFFDF6" font-family="Helvetica, Arial, sans-serif" font-size="17">agent workflow orchestration and multi-repository coordination layer</text>
+<text x="834" y="350" fill="#EDEAE0" font-family="Helvetica, Arial, sans-serif" font-size="15">coming soon</text>
+
+<path d="M392 290H440" stroke="#5F625B" stroke-width="8" stroke-linecap="round"/>
+<path d="M760 290H808" stroke="#5F625B" stroke-width="8" stroke-linecap="round"/>
+<text x="72" y="470" fill="#1B1F20" font-family="Georgia, serif" font-size="30">agent handoff map</text>
+
+<rect x="72" y="506" width="1056" height="44" rx="14" fill="#EFE5CF"/>
+<text x="96" y="534" fill="#1B1F20" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700">plan</text>
+<text x="270" y="534" fill="#5F625B" font-family="Helvetica, Arial, sans-serif" font-size="15">clawscript -> repo-targeted scenario plan</text>
+
+<rect x="72" y="564" width="1056" height="44" rx="14" fill="#EFE5CF"/>
+<text x="96" y="592" fill="#1B1F20" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700">execute</text>
+<text x="270" y="592" fill="#5F625B" font-family="Helvetica, Arial, sans-serif" font-size="15">autoscript-public -> worker-style run result and parsed playback metrics</text>
+
+<rect x="72" y="622" width="1056" height="44" rx="14" fill="#EFE5CF"/>
+<text x="96" y="650" fill="#1B1F20" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700">sample-review</text>
+<text x="270" y="650" fill="#5F625B" font-family="Helvetica, Arial, sans-serif" font-size="15">autoSampler-public -> decision score, warnings, and review reasons</text>
+
+<rect x="72" y="680" width="1056" height="44" rx="14" fill="#EFE5CF"/>
+<text x="96" y="708" fill="#1B1F20" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700">package-evidence</text>
+<text x="270" y="708" fill="#5F625B" font-family="Helvetica, Arial, sans-serif" font-size="15">autoSampler-public -> storyboards, timelines, Markdown, JSON, and static site assets</text>
+
+<rect x="72" y="738" width="1056" height="44" rx="14" fill="#EFE5CF"/>
+<text x="96" y="766" fill="#1B1F20" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700">publish</text>
+<text x="270" y="766" fill="#5F625B" font-family="Helvetica, Arial, sans-serif" font-size="15">autoSampler-public -> GitHub Pages bundle and interview walkthrough documents</text>
+
+
+</svg>

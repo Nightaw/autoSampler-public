@@ -1,0 +1,42 @@
+{
+  "project": "autoSampler Public",
+  "title": "Agent handoff map",
+  "handoffs": [
+    {
+      "stage": "plan",
+      "owner": "clawscript",
+      "input": "interview task, operator intent, or regression review request",
+      "output": "repo-targeted scenario plan",
+      "public_status": "planned"
+    },
+    {
+      "stage": "execute",
+      "owner": "autoscript-public",
+      "input": "scenario plan and playback target",
+      "output": "worker-style run result and parsed playback metrics",
+      "public_status": "available"
+    },
+    {
+      "stage": "sample-review",
+      "owner": "autoSampler-public",
+      "input": "sample unit, labels, recording, and device profile",
+      "output": "decision score, warnings, and review reasons",
+      "public_status": "available"
+    },
+    {
+      "stage": "package-evidence",
+      "owner": "autoSampler-public",
+      "input": "review report and selected timestamps",
+      "output": "storyboards, timelines, Markdown, JSON, and static site assets",
+      "public_status": "available"
+    },
+    {
+      "stage": "publish",
+      "owner": "autoSampler-public",
+      "input": "generated artifacts and documentation manifests",
+      "output": "GitHub Pages bundle and interview walkthrough documents",
+      "public_status": "available"
+    }
+  ],
+  "interview_message": "The system is framed as an agent-ready workflow: orchestration decides the work, automation executes it, and the sampler produces verifiable evidence."
+}

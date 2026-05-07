@@ -202,6 +202,7 @@ def build_showcase_manifest() -> dict[str, Any]:
         ],
         "documents": [
             "docs/architecture.md",
+            "docs/agent-collaboration.md",
             "docs/design-decisions.md",
             "docs/showcase.md",
             "docs/summary-cn-en.md",
@@ -248,6 +249,7 @@ def build_artifact_manifest() -> dict[str, Any]:
                 "docs/interview-brief.md",
                 "docs/architecture.md",
                 "docs/design-decisions.md",
+                "docs/agent-collaboration.md",
             ],
             "generated_visuals": [
                 "docs/generated/architecture-export.svg",
@@ -255,6 +257,7 @@ def build_artifact_manifest() -> dict[str, Any]:
                 "docs/generated/device-capability-matrix.svg",
                 "docs/generated/baseline-timeline.svg",
                 "docs/generated/review-timeline.svg",
+                "docs/generated/agent-ecosystem.svg",
             ],
             "storyboards": [
                 "samples/results/stall_storyboard.jpg",
@@ -263,6 +266,116 @@ def build_artifact_manifest() -> dict[str, Any]:
             ],
         },
         "scenarios": scenario_items,
+    }
+
+
+def build_agent_ecosystem_manifest() -> dict[str, Any]:
+    return {
+        "project": "autoSampler Public",
+        "title": "Agent-ready three-repository ecosystem",
+        "positioning": (
+            "A public portfolio slice that presents automation execution, sample review, and "
+            "agent workflow orchestration as separate but connected project surfaces."
+        ),
+        "repositories": [
+            {
+                "name": "autoscript-public",
+                "status": "published",
+                "url": "https://github.com/Nightaw/autoscript-public",
+                "role": "worker runtime and playback automation facade",
+                "owned_surface": [
+                    "mock worker API",
+                    "scenario run endpoint",
+                    "playback/result parsing samples",
+                    "CI-backed service demo",
+                ],
+                "handoff": "accepts planned automation work and returns structured worker reports",
+            },
+            {
+                "name": "autoSampler-public",
+                "status": "published",
+                "url": "https://github.com/Nightaw/autoSampler-public",
+                "role": "post-capture sampling, review evidence, and artifact packaging layer",
+                "owned_surface": [
+                    "sample-unit ingestion",
+                    "device capability registry",
+                    "scenario templates",
+                    "label heuristics",
+                    "storyboard evidence",
+                    "portfolio site bundle",
+                ],
+                "handoff": "turns captured media units into review decisions, images, JSON, Markdown, and site artifacts",
+            },
+            {
+                "name": "clawscript",
+                "status": "planned_public_release",
+                "url": None,
+                "role": "agent workflow orchestration and multi-repository coordination layer",
+                "owned_surface": [
+                    "agent task decomposition",
+                    "repository handoff contracts",
+                    "review loop orchestration",
+                    "interview-facing automation narrative",
+                ],
+                "handoff": "coordinates which repo should execute, review, package, or publish each step",
+            },
+        ],
+        "shared_contracts": [
+            "scenario templates",
+            "structured report JSON",
+            "artifact manifest",
+            "worker API routes",
+            "generated evidence assets",
+            "CI and Pages build outputs",
+        ],
+    }
+
+
+def build_agent_handoff_manifest() -> dict[str, Any]:
+    return {
+        "project": "autoSampler Public",
+        "title": "Agent handoff map",
+        "handoffs": [
+            {
+                "stage": "plan",
+                "owner": "clawscript",
+                "input": "interview task, operator intent, or regression review request",
+                "output": "repo-targeted scenario plan",
+                "public_status": "planned",
+            },
+            {
+                "stage": "execute",
+                "owner": "autoscript-public",
+                "input": "scenario plan and playback target",
+                "output": "worker-style run result and parsed playback metrics",
+                "public_status": "available",
+            },
+            {
+                "stage": "sample-review",
+                "owner": "autoSampler-public",
+                "input": "sample unit, labels, recording, and device profile",
+                "output": "decision score, warnings, and review reasons",
+                "public_status": "available",
+            },
+            {
+                "stage": "package-evidence",
+                "owner": "autoSampler-public",
+                "input": "review report and selected timestamps",
+                "output": "storyboards, timelines, Markdown, JSON, and static site assets",
+                "public_status": "available",
+            },
+            {
+                "stage": "publish",
+                "owner": "autoSampler-public",
+                "input": "generated artifacts and documentation manifests",
+                "output": "GitHub Pages bundle and interview walkthrough documents",
+                "public_status": "available",
+            },
+        ],
+        "interview_message": (
+            "The system is framed as an agent-ready workflow: orchestration decides the work, "
+            "automation executes it, and the sampler produces verifiable evidence."
+        ),
     }
 
 

@@ -26,6 +26,7 @@ jobs:
         run: |
           python tools/export_showcase_bundle.py
           python tools/build_contract_docs.py
+          python tools/build_agent_docs.py
           python tools/build_visual_assets.py
           python tools/build_interview_brief.py
           python tools/build_showcase_page.py

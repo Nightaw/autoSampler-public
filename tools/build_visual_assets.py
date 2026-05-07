@@ -9,7 +9,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from common.device_registry import list_devices
-from common.prescreen_runner import build_showcase_manifest, load_json
+from common.prescreen_runner import build_agent_ecosystem_manifest, build_agent_handoff_manifest, build_showcase_manifest, load_json
 
 
 OUT = ROOT / "docs" / "generated"
@@ -129,6 +129,48 @@ def build_device_matrix() -> str:
     return wrap_svg(1200, 500, body)
 
 
+def build_agent_ecosystem() -> str:
+    ecosystem = build_agent_ecosystem_manifest()
+    handoffs = build_agent_handoff_manifest()
+    repos = ecosystem["repositories"]
+    cards = []
+    x_positions = [72, 440, 808]
+    colors = ["#183A37", "#476C9B", "#BF4C2F"]
+    for repo, x, color in zip(repos, x_positions, colors):
+        status = str(repo["status"]).replace("_", " ")
+        url_label = "GitHub" if repo["url"] else "coming soon"
+        cards.append(
+            f"""
+<rect x="{x}" y="170" width="320" height="240" rx="24" fill="{color}"/>
+<text x="{x + 26}" y="220" fill="#FFFDF6" font-family="Helvetica, Arial, sans-serif" font-size="25" font-weight="700">{repo['name']}</text>
+<text x="{x + 26}" y="252" fill="#EDEAE0" font-family="Helvetica, Arial, sans-serif" font-size="15">{status}</text>
+<text x="{x + 26}" y="294" fill="#FFFDF6" font-family="Helvetica, Arial, sans-serif" font-size="17">{repo['role']}</text>
+<text x="{x + 26}" y="350" fill="#EDEAE0" font-family="Helvetica, Arial, sans-serif" font-size="15">{url_label}</text>
+"""
+        )
+    lanes = []
+    y = 506
+    for item in handoffs["handoffs"]:
+        lanes.append(
+            f"""
+<rect x="72" y="{y}" width="1056" height="44" rx="14" fill="#EFE5CF"/>
+<text x="96" y="{y + 28}" fill="#1B1F20" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700">{item['stage']}</text>
+<text x="270" y="{y + 28}" fill="#5F625B" font-family="Helvetica, Arial, sans-serif" font-size="15">{item['owner']} -> {item['output']}</text>
+"""
+        )
+        y += 58
+    body = f"""
+<text x="72" y="84" fill="#1B1F20" font-family="Georgia, serif" font-size="40">agent-ready repository system</text>
+<text x="72" y="116" fill="#5F625B" font-family="Helvetica, Arial, sans-serif" font-size="18">orchestration, automation execution, and review evidence as connected public surfaces</text>
+{''.join(cards)}
+<path d="M392 290H440" stroke="#5F625B" stroke-width="8" stroke-linecap="round"/>
+<path d="M760 290H808" stroke="#5F625B" stroke-width="8" stroke-linecap="round"/>
+<text x="72" y="470" fill="#1B1F20" font-family="Georgia, serif" font-size="30">agent handoff map</text>
+{''.join(lanes)}
+"""
+    return wrap_svg(1200, 850, body)
+
+
 def build_timeline(report_name: str, title: str) -> str:
     report = load_json(ROOT / "samples" / "results" / report_name)
     work_duration = float(report["summary"]["work_duration_seconds"])
@@ -167,6 +209,7 @@ def main() -> int:
     save(OUT / "architecture-export.svg", build_architecture_export())
     save(OUT / "scenario-comparison.svg", build_scenario_comparison())
     save(OUT / "device-capability-matrix.svg", build_device_matrix())
+    save(OUT / "agent-ecosystem.svg", build_agent_ecosystem())
     save(OUT / "baseline-timeline.svg", build_timeline("baseline_prescreen.json", "baseline timeline"))
     save(OUT / "review-timeline.svg", build_timeline("resolution_consistency_review.json", "review timeline"))
     print(OUT)
@@ -175,4 +218,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

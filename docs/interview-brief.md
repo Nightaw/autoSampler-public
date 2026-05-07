@@ -21,6 +21,24 @@ The core pipeline covers sample-unit ingestion, device selection, scenario execu
 4. Generated assets are treated as first-class outputs so the project can be explained visually, not only through source code.
 5. GitHub Actions validates tests and builds a complete Pages bundle rather than publishing an incomplete docs folder.
 
+## Agent Collaboration Positioning
+
+The current public story is a three-repository system:
+
+- `autoscript-public`: worker runtime and playback automation facade (published)
+- `autoSampler-public`: post-capture sampling, review evidence, and artifact packaging layer (published)
+- `clawscript`: agent workflow orchestration and multi-repository coordination layer (planned_public_release)
+
+The expected agent handoff is:
+
+- `plan` -> `clawscript`
+- `execute` -> `autoscript-public`
+- `sample-review` -> `autoSampler-public`
+- `package-evidence` -> `autoSampler-public`
+- `publish` -> `autoSampler-public`
+
+This matters for agent-development interviews because the boundary is explicit: orchestration chooses the work, worker automation executes it, and the sampler turns output into verifiable evidence.
+
 ## Why This Repo Exists
 
 - Turn a manual review task into a repeatable execution unit.
@@ -61,6 +79,7 @@ The core pipeline covers sample-unit ingestion, device selection, scenario execu
 - `docs/generated/architecture-export.svg`
 - `docs/generated/scenario-comparison.svg`
 - `docs/generated/device-capability-matrix.svg`
+- `docs/generated/agent-ecosystem.svg`
 - `samples/results/stall_storyboard.jpg`
 - `samples/results/resolution_review_storyboard.jpg`
 
@@ -70,12 +89,14 @@ The core pipeline covers sample-unit ingestion, device selection, scenario execu
 2. Open `docs/interview-brief.md` and use the 30-second or 2-minute version depending on interview pace.
 3. Jump into `docs/cases/baseline_prescreen.html` and `docs/cases/resolution_consistency_review.html` to show one pass path and one review path.
 4. Use `docs/generated/scenario-comparison.svg` and `docs/generated/device-capability-matrix.svg` when the discussion shifts toward architecture and extensibility.
+5. Use `docs/generated/agent-ecosystem.svg` and `docs/agent-collaboration.md` when the discussion shifts toward agent workflows or multi-repo collaboration.
 
 ## Framework Hooks
 
 - `docs/scenario-templates.json` describes reusable execution templates.
 - `docs/artifact-schema.json` documents the shape of the artifact manifest used by the public site and API.
-- `GET /demo/templates` and `GET /demo/schemas` expose the same contract surfaces programmatically.
+- `docs/agent-ecosystem.json` and `docs/agent-handoffs.json` describe the public multi-repository boundary.
+- `GET /demo/templates`, `GET /demo/schemas`, `GET /demo/ecosystem`, and `GET /demo/agent-handoffs` expose the same contract surfaces programmatically.
 
 ## Expected Questions
 
@@ -89,7 +110,7 @@ The main signal is not the individual parser; it is the layering: scenario model
 
 ### What would the next step be?
 
-Attach a richer scenario template system, add more artifact types, and back the mock queue with a small persistence layer.
+Publish `clawscript`, attach a richer scenario template system, add more artifact types, and back the mock queue with a small persistence layer.
 
 ## Repo Snapshot
 

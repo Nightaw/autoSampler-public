@@ -19,6 +19,9 @@ class SiteBundleTest(unittest.TestCase):
         self.assertIn("./assets/results/stall_storyboard.jpg", html)
         self.assertIn("./interview-brief.html", html)
         self.assertIn("./data/showcase_manifest.json", html)
+        self.assertIn("./assets/generated/agent-ecosystem.svg", html)
+        self.assertIn("./documents/agent-collaboration.html", html)
+        self.assertIn("./data/agent_ecosystem.json", html)
 
     def test_markdown_to_html_wraps_content(self) -> None:
         html = markdown_to_html("# Title\n\n- one\n- two\n", "Title")
