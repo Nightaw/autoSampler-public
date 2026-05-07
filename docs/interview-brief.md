@@ -25,13 +25,13 @@ The core pipeline covers sample-unit ingestion, device selection, scenario execu
 
 The current public story is a three-repository system:
 
+- `clawscript-public`: agent workflow orchestration and multi-repository coordination layer (published_public_bootstrap)
 - `autoscript-public`: worker runtime and playback automation facade (published)
 - `autoSampler-public`: post-capture sampling, review evidence, and artifact packaging layer (published)
-- `clawscript`: agent workflow orchestration and multi-repository coordination layer (planned_public_release)
 
 The expected agent handoff is:
 
-- `plan` -> `clawscript`
+- `plan` -> `clawscript-public`
 - `execute` -> `autoscript-public`
 - `sample-review` -> `autoSampler-public`
 - `package-evidence` -> `autoSampler-public`
@@ -110,7 +110,7 @@ The main signal is not the individual parser; it is the layering: scenario model
 
 ### What would the next step be?
 
-Publish `clawscript`, attach a richer scenario template system, add more artifact types, and back the mock queue with a small persistence layer.
+Expand `clawscript-public`, attach a richer scenario template system, add more artifact types, and back the mock queue with a small persistence layer.
 
 ## Repo Snapshot
 

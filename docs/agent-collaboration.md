@@ -4,13 +4,13 @@
 
 ## Repository Roles
 
-- `autoscript-public` (published): worker runtime and playback automation facade. Handoff: accepts planned automation work and returns structured worker reports.
+- `clawscript-public` (published_public_bootstrap): agent workflow orchestration and multi-repository coordination layer. Handoff: coordinates which repo should execute, review, package, or publish each step.
+- `autoscript-public` (published): worker runtime and playback automation facade. Handoff: accepts planned agent work and returns structured worker reports.
 - `autoSampler-public` (published): post-capture sampling, review evidence, and artifact packaging layer. Handoff: turns captured media units into review decisions, images, JSON, Markdown, and site artifacts.
-- `clawscript` (planned_public_release): agent workflow orchestration and multi-repository coordination layer. Handoff: coordinates which repo should execute, review, package, or publish each step.
 
 ## Handoff Flow
 
-- `plan` -> `clawscript`: input `interview task, operator intent, or regression review request`; output `repo-targeted scenario plan`.
+- `plan` -> `clawscript-public`: input `interview task, operator intent, or regression review request`; output `repo-targeted scenario plan`.
 - `execute` -> `autoscript-public`: input `scenario plan and playback target`; output `worker-style run result and parsed playback metrics`.
 - `sample-review` -> `autoSampler-public`: input `sample unit, labels, recording, and device profile`; output `decision score, warnings, and review reasons`.
 - `package-evidence` -> `autoSampler-public`: input `review report and selected timestamps`; output `storyboards, timelines, Markdown, JSON, and static site assets`.

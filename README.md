@@ -45,7 +45,7 @@ The public portfolio is organized as a three-repository system:
 
 - [`autoscript-public`](https://github.com/Nightaw/autoscript-public): worker runtime and playback automation facade.
 - [`autoSampler-public`](https://github.com/Nightaw/autoSampler-public): post-capture sampling, review evidence, and artifact packaging layer.
-- `clawscript`: planned public orchestration layer for agent task decomposition and repository handoffs.
+- [`clawscript-public`](https://github.com/Nightaw/clawscript-public): public orchestration layer for agent task decomposition and repository handoffs.
 
 The collaboration contract is documented through [Agent Collaboration](./docs/agent-collaboration.md), [agent-ecosystem.json](./docs/agent-ecosystem.json), and [agent-handoffs.json](./docs/agent-handoffs.json).
 

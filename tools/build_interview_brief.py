@@ -129,7 +129,7 @@ The main signal is not the individual parser; it is the layering: scenario model
 
 ### What would the next step be?
 
-Publish `clawscript`, attach a richer scenario template system, add more artifact types, and back the mock queue with a small persistence layer.
+Expand `clawscript-public`, attach a richer scenario template system, add more artifact types, and back the mock queue with a small persistence layer.
 
 ## Repo Snapshot
 

@@ -279,6 +279,19 @@ def build_agent_ecosystem_manifest() -> dict[str, Any]:
         ),
         "repositories": [
             {
+                "name": "clawscript-public",
+                "status": "published_public_bootstrap",
+                "url": "https://github.com/Nightaw/clawscript-public",
+                "role": "agent workflow orchestration and multi-repository coordination layer",
+                "owned_surface": [
+                    "agent task decomposition",
+                    "repository handoff contracts",
+                    "validation gate taxonomy",
+                    "interview-facing automation narrative",
+                ],
+                "handoff": "coordinates which repo should execute, review, package, or publish each step",
+            },
+            {
                 "name": "autoscript-public",
                 "status": "published",
                 "url": "https://github.com/Nightaw/autoscript-public",
@@ -289,7 +302,7 @@ def build_agent_ecosystem_manifest() -> dict[str, Any]:
                     "playback/result parsing samples",
                     "CI-backed service demo",
                 ],
-                "handoff": "accepts planned automation work and returns structured worker reports",
+                "handoff": "accepts planned agent work and returns structured worker reports",
             },
             {
                 "name": "autoSampler-public",
@@ -305,19 +318,6 @@ def build_agent_ecosystem_manifest() -> dict[str, Any]:
                     "portfolio site bundle",
                 ],
                 "handoff": "turns captured media units into review decisions, images, JSON, Markdown, and site artifacts",
-            },
-            {
-                "name": "clawscript",
-                "status": "planned_public_release",
-                "url": None,
-                "role": "agent workflow orchestration and multi-repository coordination layer",
-                "owned_surface": [
-                    "agent task decomposition",
-                    "repository handoff contracts",
-                    "review loop orchestration",
-                    "interview-facing automation narrative",
-                ],
-                "handoff": "coordinates which repo should execute, review, package, or publish each step",
             },
         ],
         "shared_contracts": [
@@ -338,10 +338,10 @@ def build_agent_handoff_manifest() -> dict[str, Any]:
         "handoffs": [
             {
                 "stage": "plan",
-                "owner": "clawscript",
+                "owner": "clawscript-public",
                 "input": "interview task, operator intent, or regression review request",
                 "output": "repo-targeted scenario plan",
-                "public_status": "planned",
+                "public_status": "published_public_bootstrap",
             },
             {
                 "stage": "execute",

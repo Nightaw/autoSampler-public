@@ -4,10 +4,10 @@
   "handoffs": [
     {
       "stage": "plan",
-      "owner": "clawscript",
+      "owner": "clawscript-public",
       "input": "interview task, operator intent, or regression review request",
       "output": "repo-targeted scenario plan",
-      "public_status": "planned"
+      "public_status": "published_public_bootstrap"
     },
     {
       "stage": "execute",

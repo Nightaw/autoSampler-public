@@ -33,7 +33,7 @@ class ContractDocsTest(unittest.TestCase):
         manifest = build_agent_ecosystem_manifest()
         self.assertEqual(manifest["title"], "Agent-ready three-repository ecosystem")
         self.assertIn("autoscript-public", [repo["name"] for repo in manifest["repositories"]])
-        self.assertIn("clawscript", [repo["name"] for repo in manifest["repositories"]])
+        self.assertIn("clawscript-public", [repo["name"] for repo in manifest["repositories"]])
 
     def test_agent_handoff_manifest(self) -> None:
         manifest = build_agent_handoff_manifest()
